@@ -388,7 +388,7 @@ if (d_enemy_occupy_bldgs == 1) then {
 	//START create garrisoned groups of snipers
 	//prepare to create garrisoned groups of snipers - find and sort buildings
 	private _buildingsArray = [];
-	private _buildingsArrayRaw = nearestObjects [_trg_center, ["Building", "House"], 425];
+	private _buildingsArrayRaw = nearestObjects [_trg_center, ["Building", "House"], 425, true];
 
 	if (_buildingsArrayRaw isEqualTo []) exitWith {};
 
