@@ -4,7 +4,7 @@ rem just copy MakePBO.exe and DePbo.dll in the dom_maker folder
 
 set BASE_MASTER=co30_Domination.Altis
 set MASTER=co30_Domination.Altis
-set D_VER=4_39
+set D_VER=4_39_custom
 set D_BNVER=4.39
 set D_NUM_PLAYERS=40
 set D_NUM_PLAYERS_TT=50
