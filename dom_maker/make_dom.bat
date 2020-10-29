@@ -40,7 +40,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -69,7 +69,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -98,7 +98,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -127,7 +127,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -156,7 +156,7 @@ rmdir /S /Q ma3s
 rmdir /S /Q ma3a
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -185,7 +185,7 @@ rmdir /S /Q ma3s
 rmdir /S /Q ma3a
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -214,7 +214,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem Opfor RHS Altis
@@ -242,7 +242,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem Blufor Chernarus
@@ -270,7 +270,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem Blufor Chernarus 2020 (A3)
@@ -298,7 +298,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem Blufor Chernarus Winter
@@ -326,7 +326,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem Blufor Takistan
@@ -354,7 +354,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem Blufor Sahrani
@@ -382,7 +382,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -411,7 +411,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -441,7 +441,7 @@ rmdir /S /Q ma3m
 rmdir /S /Q ma3s
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -471,7 +471,7 @@ rmdir /S /Q ma3m
 rmdir /S /Q ma3s
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -501,7 +501,7 @@ rmdir /S /Q ma3m
 rmdir /S /Q ma3s
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -531,7 +531,7 @@ rmdir /S /Q ma3m
 rmdir /S /Q ma3s
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -560,7 +560,7 @@ rmdir /S /Q ma3a
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -591,7 +591,7 @@ rmdir /S /Q ma3m
 rmdir /S /Q mifa3
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -622,7 +622,7 @@ rmdir /S /Q ma3m
 rmdir /S /Q mifa3
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 
@@ -654,7 +654,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem TT Tanoa
@@ -682,7 +682,7 @@ rmdir /S /Q mifa3
 rmdir /S /Q ma3m
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem TT Malden
@@ -710,7 +710,7 @@ rmdir /S /Q ma3s
 rmdir /S /Q ma3a
 cd ..
 cd ..
-makePbo -AJNP %NEW_VER%
+makePbo -AN %NEW_VER%
 rmdir /S /Q %NEW_VER%
 
 rem cleanup
