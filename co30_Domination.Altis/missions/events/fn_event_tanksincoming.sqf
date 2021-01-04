@@ -37,21 +37,19 @@ _with_less_armor = if (!isNil "d_enemy_mode_current_maintarget") then {
 switch (_with_less_armor) do {
 	case 0: {
 		_eventArmorAll = [
-			_eventArmorHeavy,
 			_eventArmorMedium,
+			_eventArmorLight,
 			_eventArmorLight
 		];
 	};
 	case 1: {
 		_eventArmorAll = [
 			_eventArmorMedium,
-			_eventArmorLight,
 			_eventArmorLight
 		];	
 	};
 	case 2: {
 		_eventArmorAll = [
-			_eventArmorLight,
 			_eventArmorLight,
 			_eventArmorLight
 		];
@@ -80,7 +78,7 @@ if (_townNearbyPos isEqualTo []) exitWith {
 
 _x_mt_event_ar = [];
 
-private _trigger = [_target_center, [600,600,0,false], [d_own_side,"PRESENT",true], ["this","thisTrigger setVariable ['d_event_start', true]",""]] call d_fnc_CreateTriggerLocal;
+private _trigger = [_target_center, [600,600,0,false,30], [d_own_side,"PRESENT",true], ["this","thisTrigger setVariable ['d_event_start', true]",""]] call d_fnc_CreateTriggerLocal;
 
 waitUntil {sleep 0.1;!isNil {_trigger getVariable "d_event_start"}};
 
@@ -157,27 +155,14 @@ while {!d_mt_done && {!_all_dead}} do {
 	sleep 15;
 };
 
-sleep 60;
+if (d_ai_persistent_corpses == 0) then {
+	waitUntil {sleep 10; d_mt_done};
+} else {
+	sleep 120;
+};
 
 //cleanup
-{
-	if !(isNull _x) then {
-		if (_x isKindOf "House") then {
-			_x setDamage 0;
-			deleteVehicle _x;
-		} else {
-			if (_x isKindOf "LandVehicle" && {!((crew _x) isEqualTo [])}) then {
-				if ({(_x call d_fnc_isplayer) && {alive _x}} count (crew _x) == 0) then {
-					_x call d_fnc_DelVecAndCrew;
-				};
-			} else {
-				deleteVehicle _x;
-			};
-		};
-	};
-} forEach _x_mt_event_ar;
-_x_mt_event_ar = [];
-
+_x_mt_event_ar call d_fnc_deletearrayunitsvehicles;
 deleteVehicle _trigger;
 
 d_mt_event_messages_array deleteAt (d_mt_event_messages_array find _eventDescription);

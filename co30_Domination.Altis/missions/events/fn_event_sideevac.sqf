@@ -18,11 +18,11 @@ if (true) exitWith {};
 
 private _mt_event_key = format ["d_X_MTEVENT_%1", d_cur_tgt_name];
 
-//position the crash site near target center at max distance 250m and min 150m 
-private _poss = [[[_target_center, 250]],[[_target_center, 150]]] call BIS_fnc_randomPos;
+//position the event site near target center at max distance 125m and min 15m 
+private _poss = [[[_target_center, 125]],[[_target_center, 15]]] call BIS_fnc_randomPos;
 private _x_mt_event_ar = [];
 
-private _trigger = [_poss, [225,225,0,false], [d_own_side,"PRESENT",true], ["this","thisTrigger setVariable ['d_event_start', true]",""]] call d_fnc_CreateTriggerLocal;
+private _trigger = [_poss, [225,225,0,false,30], [d_own_side,"PRESENT",true], ["this","thisTrigger setVariable ['d_event_start', true]",""]] call d_fnc_CreateTriggerLocal;
 
 waitUntil {sleep 0.1;!isNil {_trigger getVariable "d_event_start"}};
 
@@ -208,29 +208,15 @@ sleep 5.432;
 	};
 } forEach [_pilot1, _pilot2];
 
-sleep 0.5;
-
-//cleanup
-{
-	if !(isNull _x) then {
-		if (_x isKindOf "House") then {
-			_x setDamage 0;
-			deleteVehicle _x;
-		} else {
-			if (_x isKindOf "LandVehicle" && {!((crew _x) isEqualTo [])}) then {
-				if ({(_x call d_fnc_isplayer) && {alive _x}} count (crew _x) == 0) then {
-					_x call d_fnc_DelVecAndCrew;
-				};
-			} else {
-				deleteVehicle _x;
-			};
-		};
-	};
-} forEach _x_mt_event_ar;
-_x_mt_event_ar = [];
-
 deleteVehicle _trigger;
 deleteMarker _marker; 
+
+//this mission only has a few objects, prefer to leave them until the maintarget is complete
+//it looks bad when the crashed helicopter is suddenly deleted during cleanup
+waitUntil {sleep 10; d_mt_done};
+
+//cleanup
+_x_mt_event_ar call d_fnc_deletearrayunitsvehicles;
 
 d_mt_event_messages_array deleteAt (d_mt_event_messages_array find _eventDescription);
 publicVariable "d_mt_event_messages_array";

@@ -3000,6 +3000,18 @@
 <Chinese>Always, multiple events</Chinese>
 <French>Always, multiple events</French>
 </Key>
+<Key ID="STR_DOM_MISSIONSTRING_418C_GUERR">
+<English>Always, multiple events with guerrillas</English>
+<Spanish>Always, multiple events with guerrillas</Spanish>
+<Portuguese>Always, multiple events with guerrillas</Portuguese>
+<Korean>항상, 다중 이벤트 with guerrillas</Korean>
+<Japanese>Always, multiple events with guerrillas</Japanese>
+<Original>Always, multiple events with guerrillas</Original>
+<Russian>Всегда, несколько событий with guerrillas</Russian>
+<Chinesesimp>总是，多个事件 with guerrillas</Chinesesimp>
+<Chinese>Always, multiple events with guerrillas</Chinese>
+<French>Always, multiple events with guerrillas</French>
+</Key>
 <Key ID="STR_DOM_MISSIONSTRING_493">
 <English>(Dead)</English>
 <Spanish>(Muerto)</Spanish>
@@ -13195,16 +13207,16 @@
 <French>Low number of AI units and radio tower destroyed</French>
 </Key>
 <Key ID="STR_DOM_MISSIONSTRING_2006">
-<English>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a droped ammobox</English>
+<English>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a dropped ammobox</English>
 <Spanish>Explosivo eliminado. Estás en el aire o demasiado cerca de un MHQ (menos de 9 m) o demasiado cerca de una caja de munición caída</Spanish>
 <Portuguese>Explosivo removido. Você está no ar ou muito perto de um MHQ (menos de 9m) ou muito perto de uma caixa de amoboas gotejadas.</Portuguese>
 <Korean>폭발물이 제거되었습니다. 귀관은 공중에 있거나 MHQ에 근접해 있습니다 (9m 이내) 또는 아머박스가 있는곳에서 너무 가깝습니다.</Korean>
-<Japanese>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a droped ammobox</Japanese>
-<Original>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a droped ammobox</Original>
+<Japanese>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a dropped ammobox</Japanese>
+<Original>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a dropped ammobox</Original>
 <Russian>Взрывчатка удалена. Вы находитесь либо воздухе или слишком близко к MHQ (меньше, чем 9м) или слишком близко к ящику с боеприпасами</Russian>
 <Chinesesimp>爆炸物已移除。你要么处于空中，要么离基地车（小于9米）太近，或者离放置的弹药箱太近</Chinesesimp>
-<Chinese>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a droped ammobox</Chinese>
-<French>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a droped ammobox</French>
+<Chinese>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a dropped ammobox</Chinese>
+<French>Explosive removed. You are either in the air or too close to a MHQ (less than 9m) or too close to a dropped ammobox</French>
 </Key>
 <Key ID="STR_DOM_MISSIONSTRING_2007">
 <English>Reduce number of AI units in groups depending on player numbers</English>
@@ -13574,6 +13586,54 @@
 <Chinese>prisoners</Chinese>
 <French>prisoners</French>
 </Key>
+<Key ID="STR_DOM_MISSIONSTRING_PRISONERSANDEXPLOSIVES">
+<English>prisoners + explosives</English>
+<Spanish>prisoners + explosives</Spanish>
+<Portuguese>prisoners + explosives</Portuguese>
+<Korean>포로들 + explosives</Korean>
+<Japanese>prisoners + explosives</Japanese>
+<Original>prisoners + explosives</Original>
+<Russian>заключенных + explosives</Russian>
+<Chinesesimp>囚犯 + explosives</Chinesesimp>
+<Chinese>prisoners + explosives</Chinese>
+<French>prisoners + explosives</French>
+</Key>
+<Key ID="STR_DOM_MISSIONSTRING_EXPLOSIVES_PRESENT">
+<English>Warning: enemy explosive device may be present.</English>
+<Spanish>Warning: enemy explosive device may be present.</Spanish>
+<Portuguese>Warning: enemy explosive device may be present.</Portuguese>
+<Korean>Warning: enemy explosive device may be present.</Korean>
+<Japanese>Warning: enemy explosive device may be present.</Japanese>
+<Original>Warning: enemy explosive device may be present.</Original>
+<Russian>Warning: enemy explosive device may be present.</Russian>
+<Chinesesimp>Warning: enemy explosive device may be present.</Chinesesimp>
+<Chinese>Warning: enemy explosive device may be present.</Chinese>
+<French>Warning: enemy explosive device may be present.</French>
+</Key>
+<Key ID="STR_DOM_MISSIONSTRING_EXPLOSIVES_FAIL">
+<English>The enemy detonated a device. Failure.</English>
+<Spanish>The enemy detonated a device. Failure.</Spanish>
+<Portuguese>The enemy detonated a device. Failure.</Portuguese>
+<Korean>The enemy detonated a device. Failure.</Korean>
+<Japanese>The enemy detonated a device. Failure.</Japanese>
+<Original>The enemy detonated a device. Failure.</Original>
+<Russian>The enemy detonated a device. Failure.</Russian>
+<Chinesesimp>The enemy detonated a device. Failure.</Chinesesimp>
+<Chinese>The enemy detonated a device. Failure.</Chinese>
+<French>The enemy detonated a device. Failure.</French>
+</Key>
+<Key ID="STR_DOM_MISSIONSTRING_EXPLOSIVES_SUCCESS">
+<English>Enemy explosive device disabled. Success!</English>
+<Spanish>Enemy explosive device disabled. Success!</Spanish>
+<Portuguese>Enemy explosive device disabled. Success!</Portuguese>
+<Korean>Enemy explosive device disabled. Success!</Korean>
+<Japanese>Enemy explosive device disabled. Success!</Japanese>
+<Original>Enemy explosive device disabled. Success!</Original>
+<Russian>Enemy explosive device disabled. Success!</Russian>
+<Chinesesimp>Enemy explosive device disabled. Success!</Chinesesimp>
+<Chinese>Enemy explosive device disabled. Success!</Chinese>
+<French>Enemy explosive device disabled. Success!</French>
+</Key>
 <Key ID="STR_DOM_MISSIONSTRING_2033">
 <English>Push Boat</English>
 <Spanish>Push Boat</Spanish>
@@ -13681,6 +13741,18 @@
 <Chinesesimp>Press X to exit!!!</Chinesesimp>
 <Chinese>Press X to exit!!!</Chinese>
 <French>Press X to exit!!!</French>
+</Key>
+<Key ID="STR_DOM_MISSIONSTRING_AI_SILENT">
+<English>Bots are silent</English>
+<Spanish>Bots are silent</Spanish>
+<Portuguese>Bots are silent</Portuguese>
+<Korean>Bots are silent</Korean>
+<Japanese>Bots are silent</Japanese>
+<Original>Bots are silent</Original>
+<Russian>Bots are silent</Russian>
+<Chinesesimp>Bots are silent</Chinesesimp>
+<Chinese>Bots are silent</Chinese>
+<French>Bots are silent</French>
 </Key>
 </Container>
 </Package>
