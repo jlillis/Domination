@@ -38,7 +38,7 @@ d_vrespawn2_ar = [];
 				[_vec, 14] call d_fnc_setekmode;
 			};
 			[_vec, 10] call d_fnc_setekmode;
-			_vec addEventHandler ["handleDamage", {_this call d_fnc_pshootatmhq}];
+			_vec addEventHandler ["handleDamage", {call d_fnc_pshootatmhq}];
 #ifndef __TT__
 			private _flag = call {
 			     if (d_own_side == "EAST") exitWith {"\a3\data_f\flags\flag_red_co.paa"};
@@ -70,9 +70,10 @@ d_vrespawn2_ar = [];
 		if (d_with_ranked) then {
 			clearWeaponCargoGlobal _vec;
 		};
-		if (_vec isKindOf "Boat_F" || {_vec isKindOf "Boat"}) then {
+		if (_vec isKindOf "Boat_F") then {
 			_vec remoteExecCall ["d_fnc_addpushaction", [0, -2] select isDedicated];
 		};
+		_vec setDamage 0;
 	};
 } forEach _this;
 

@@ -10,7 +10,7 @@ sleep 5;
 d_all_igrps_vecs = [];
 #endif
 
-d_old_old_start = [0,0,0];
+d_old_old_start = [0, 0, 0];
 
 private _isle_grps = [];
 for "_i" from 1 to (d_with_isledefense # 4) do {
@@ -39,10 +39,16 @@ while {true} do {
 				} else {
 					private _dummy = (_x # 2) findIf {
 #ifndef __DEBUG__
-						private _ret = (alive _x && {_x distance2D (_x getVariable ["d_cur_pos", [0, 0, 0]]) < 100}) || {!canMove _x};
+						private _ret = !alive _x || {!canMove _x || {_x distance2D (_x getVariable ["d_cur_pos", [0, 0, 0]]) < 100}};
 #else
-						private _ret = (alive _x && {_x distance2D (_x getVariable ["d_cur_pos", [0, 0, 0]]) < 10}) || {!canMove _x};
+						private _ret = !alive _x || {!canMove _x || {_x distance2D (_x getVariable ["d_cur_pos", [0, 0, 0]]) < 10}};
+						
+						__TRACE_2("","alive _x","canMove _x")
+						_dist2d = _x distance2D (_x getVariable ["d_cur_pos", [0, 0, 0]]);
+						_curpos2d = _x getVariable ["d_cur_pos", [0, 0, 0]];
+						__TRACE_3("","_dist2d","getPos _x","_curpos2d")
 #endif
+						__TRACE_1("","_ret")
 						if (!_ret) then {
 							_x setVariable ["d_cur_pos", getPosASL _x];
 						} else {
@@ -64,6 +70,7 @@ while {true} do {
 #endif
 			};
 		} else {
+			__TRACE_2("","_x","time")
 			if (time > (_x # 3)) then {
 				private _lead = leader (_x # 0);
 				if (!alive _lead) then {
@@ -78,7 +85,7 @@ while {true} do {
 					};
 				};
 				private _dodelu = true;
-				if (alive _lead && {!(((allPlayers - entities "HeadlessClient_F") select {_x distance2D _lead < 1000}) isEqualTo [])}) then {
+				if (alive _lead && {((allPlayers - entities "HeadlessClient_F") select {_x distance2D _lead < 1000}) isNotEqualTo []}) then {
 					_dodelu = false;
 				};
 				__TRACE("Time reached for new group")
@@ -92,7 +99,7 @@ while {true} do {
 			};
 		};
 #ifndef __DEBUG__
-		sleep 50 + random 50;
+		sleep 70 + random 70;
 #else
 		sleep 5;
 #endif

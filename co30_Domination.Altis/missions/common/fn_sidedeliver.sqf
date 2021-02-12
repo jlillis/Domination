@@ -72,7 +72,7 @@ sleep 10.213;
 
 private _reached_base = false;
 
-private _markern = format ["d_smvecposc_%1", _vec];
+private _markern = format ["d_smvecposc_%1", _vec call d_fnc_markername];
 
 [_markern, [0, 0, 0], "ICON", "ColorBlue", [0.5, 0.5], localize "STR_DOM_MISSIONSTRING_1584" , 0, "mil_dot"] call d_fnc_CreateMarkerGlobal;
 	
@@ -99,7 +99,7 @@ d_sm_resolved = true;
 sleep 2.123;
 
 if (!isNull _vec && {alive _vec}) then {
-	if !((crew _vec) isEqualTo []) then {
+	if ((crew _vec) isNotEqualTo []) then {
 		{moveOut _x} forEach (crew _vec);
 	};
 	[_vec, true] call d_fnc_l_v;

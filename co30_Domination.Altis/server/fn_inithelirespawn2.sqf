@@ -23,7 +23,7 @@ d_helirespawn2_ar = [];
 		_vec setPos _vposp;
 		_vec setDamage 0;
 		
-		_vec addEventhandler ["local", {_this call d_fnc_heli_local_check}];
+		_vec addEventhandler ["local", {call d_fnc_heli_local_check}];
 		
 #ifdef __TT__
 		if (_number_v < 4000) then {
@@ -45,6 +45,7 @@ d_helirespawn2_ar = [];
 		if (d_with_ranked) then {
 			clearWeaponCargoGlobal _vec;
 		};
+		_vec setDamage 0;
 	};
 } forEach _this;
 

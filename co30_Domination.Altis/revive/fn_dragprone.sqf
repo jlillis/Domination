@@ -12,24 +12,24 @@ player setVariable ["xr_is_dragging", true];
 
 private _unit = player;
 private _name_dragee = [_dragee] call d_fnc_gethpname;
-if (isNil "_name_dragee" || {_name_dragee == ""}) then {_name_dragee = _dragee call d_fnc_getplayername};
+if (isNil "_name_dragee" || {_name_dragee == ""}) then {_name_dragee = name _dragee};
 
 _dragee setVariable ["xr_dragged", true, true];
  
 sleep 2;
 
-[_dragee, "unconscious"] remoteExecCall ["switchMove"];
+[_dragee, 5] remoteExecCall ["d_fnc_swm"];
 
 _dragee attachto [_unit, [0, 2, 0]];
 sleep 0.02;
-[_dragee, 180] remoteExecCall ["setDir"];
+_dragee remoteExecCall ["d_fnc_sd180"];
 
 xr_drag = true;
 
 if (xr_dropAction != -3333) then {player removeAction xr_dropAction;xr_dropAction = -3333};
-xr_dropAction = player addAction [format["<t color='#FF0000'>%2 %1</t>",_name_dragee, localize "STR_DOM_MISSIONSTRING_1733"], {_this call xr_fnc_drop_body}, [_dragee, 1], 0, false, true];
+xr_dropAction = player addAction [format["<t color='#FF0000'>%2 %1</t>",_name_dragee, localize "STR_DOM_MISSIONSTRING_1733"], {call xr_fnc_drop_body}, [_dragee, 1], 0, false, true];
 xr_dragprone_key_ar = actionKeys "moveForward" + actionKeys "moveFastForward";
-xr_dragprone_keyDownEHId = (findDisplay 46) displayAddEventHandler ["KeyDown", {((_this select 1) in xr_dragprone_key_ar)}];
+xr_dragprone_keyDownEHId = (findDisplay 46) displayAddEventHandler ["KeyDown", {((_this # 1) in xr_dragprone_key_ar)}];
 sleep 0.5;
 
 private _found_anim = false;
@@ -94,7 +94,7 @@ while {xr_drag} do {
 
 player setVariable ["xr_pisinaction", false];
 player setVariable ["xr_is_dragging", false];
-_dragee setVariable ["xr_dragged", false, true];
+_dragee setVariable ["xr_dragged", nil, true];
 
 (findDisplay 46) displayRemoveEventHandler ["KeyDown", xr_dragprone_keyDownEHId];
 

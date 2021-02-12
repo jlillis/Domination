@@ -28,7 +28,7 @@ __TRACE_2("","_mchelper","_doreduce")
 
 private _ret = [];
 
-if ((d_smallgrps == 0 && {_doreduce}) || _unitsPerGroup > 0) then {
+if ((d_smallgrps == 0 && {_doreduce}) || {_unitsPerGroup > 0}) then {
 	_unitliste = [_unitliste, _unitsPerGroup] call d_fnc_ulreduce;
 };
 
@@ -49,7 +49,7 @@ private _subskill = if (diag_fps < 29 && {d_skillfps == 0}) then {
 
 if (!_mchelper) then {
 	private _nnpos = _pos findEmptyPosition [0, 30, _unitliste # 0];
-	if !(_nnpos isEqualTo []) then {_pos = _nnpos};
+	if (_nnpos isNotEqualTo []) then {_pos = _nnpos};
 };
 
 private _nightorfog = call d_fnc_nightfograin;
@@ -92,7 +92,7 @@ private _nightorfog = call d_fnc_nightfograin;
 #endif
 	private _bino = binocular _one_unit;
 	__TRACE_1("","_bino")
-	if !(_bino isEqualTo "") then {
+	if (_bino isNotEqualTo "") then {
 		_one_unit removeWeapon _bino;
 	};
 	_one_unit setDamage 0;
@@ -124,7 +124,7 @@ if (d_ai_awareness_rad > 0 || {d_snp_aware > 0 || {d_ai_pursue_rad > 0 || {d_ai_
 	};
 	
 	//advanced awareness
-	if (["Sniper", groupId(_grp)] call BIS_fnc_inString) then {
+	if (["Sniper", groupId _grp] call BIS_fnc_inString) then {
 		{
 			[_x, _sideToEngage, 1400, d_ai_pursue_rad, d_ai_aggressiveshoot, d_ai_quickammo] spawn d_fnc_hallyg_dlegion_Snipe_awareness;
 		} forEach units _grp;

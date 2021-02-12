@@ -20,12 +20,12 @@ while {true} do {
 
 sleep 1.0123;
 
-private _poss = [_trg_center, _mtradius, 3, 0.3, 0, false, true] call d_fnc_GetRanPointCircleBig;
+private _poss = [_trg_center, _mtradius, 5, 0.3, 0, false, true] call d_fnc_GetRanPointCircleBig;
 private _iccount = 0;
 while {_poss isEqualTo []} do {
 	_iccount = _iccount + 1;
-	_poss = [_trg_center, _mtradius, 3, 0.3, 0, false, true] call d_fnc_GetRanPointCircleBig;
-	if (_iccount >= 50 && {!(_poss isEqualTo [])}) exitWith {};
+	_poss = [_trg_center, _mtradius, 5, 0.3, 0, false, true] call d_fnc_GetRanPointCircleBig;
+	if (_iccount >= 70 && {_poss isNotEqualTo []}) exitWith {};
 };
 if (isNil "_poss" || {_poss isEqualTo []}) then {
 	_poss = [_trg_center, _mtradius] call d_fnc_getranpointcircle;
@@ -36,7 +36,7 @@ _vec setVectorUp [0,0,1];
 [_vec] call d_fnc_CheckMTHardTarget;
 d_mt_radio_down = false;
 if (d_ao_markers == 1) then {
-	["d_main_target_radiotower", _poss, "ICON","ColorBlack", [0.5,0.5], localize "STR_DOM_MISSIONSTRING_521", 0, "mil_dot"] call d_fnc_CreateMarkerGlobal;
+	["d_m_t_rt", _poss, "ICON","ColorBlack", [0.5,0.5], localize "STR_DOM_MISSIONSTRING_521", 0, "mil_dot"] call d_fnc_CreateMarkerGlobal;
 };
 
 if (d_with_dynsim == 0) then {
@@ -63,9 +63,9 @@ sleep 1.234;
 d_mt_spotted = false;
 d_create_new_paras = false;
 #ifndef __TT__
-d_f_check_trigger = ([d_cur_tgt_pos, [d_cur_target_radius + 300, d_cur_target_radius + 300, 0, false], ["ANYPLAYER", d_enemy_side + " D", false], ["this", "0 = 0 spawn {scriptName 'spawn createsecondary3';if (!d_create_new_paras) then {d_create_new_paras = true;if !(d_transport_chopper isEqualTo []) then {d_parahhandle = 0 spawn d_fnc_parahandler}};d_mt_spotted = true;[12] call d_fnc_DoKBMsg;0 spawn d_fnc_createambient;sleep 5; deleteVehicle d_f_check_trigger}", ""]] call d_fnc_createtriggerlocal);
+d_f_check_trigger = ([d_cur_tgt_pos, [d_cur_target_radius + 300, d_cur_target_radius + 300, 0, false], ["ANYPLAYER", d_enemy_side + " D", false], ["this", "0 = 0 spawn {scriptName 'spawn createsecondary3';if (!d_create_new_paras) then {d_create_new_paras = true;if (d_transport_chopper isNotEqualTo []) then {d_parahhandle = 0 spawn d_fnc_parahandler}};d_mt_spotted = true;[12] call d_fnc_DoKBMsg;0 spawn d_fnc_createambient;sleep 5; deleteVehicle d_f_check_trigger}", ""]] call d_fnc_createtriggerlocal);
 #else
-d_f_check_trigger = ([d_cur_tgt_pos, [d_cur_target_radius + 300, d_cur_target_radius + 300, 0, false], ["ANYPLAYER", d_enemy_side + " D", false], ["this", "0 = 0 spawn {scriptName 'spawn createsecondary4';if (!d_create_new_paras) then {d_create_new_paras = true;if !(d_transport_chopper isEqualTo []) then {d_parahhandle = 0 spawn d_fnc_parahandler}};d_mt_spotted = true;[13] call d_fnc_DoKBMsg;0 spawn d_fnc_createambient;sleep 5; deleteVehicle d_f_check_trigger}", ""]] call d_fnc_createtriggerlocal);
+d_f_check_trigger = ([d_cur_tgt_pos, [d_cur_target_radius + 300, d_cur_target_radius + 300, 0, false], ["ANYPLAYER", d_enemy_side + " D", false], ["this", "0 = 0 spawn {scriptName 'spawn createsecondary4';if (!d_create_new_paras) then {d_create_new_paras = true;if (d_transport_chopper isNotEqualTo []) then {d_parahhandle = 0 spawn d_fnc_parahandler}};d_mt_spotted = true;[13] call d_fnc_DoKBMsg;0 spawn d_fnc_createambient;sleep 5; deleteVehicle d_f_check_trigger}", ""]] call d_fnc_createtriggerlocal);
 #endif
 
 if (d_ao_check_for_ai in [0, 1]) then {
@@ -112,16 +112,16 @@ if (d_ao_check_for_ai in [0, 1]) then {
 			_isFirstCamp = false;
 		} else {
 			private _idx = floor random (count _parray);
-			_poss = _parray select _idx;
+			_poss = _parray # _idx;
 			__TRACE_1("1","_poss")
 
-			if !(d_currentcamps isEqualTo []) then {
+			if (d_currentcamps isNotEqualTo []) then {
 				private _fidx = d_currentcamps findIf {_x distance2D _poss < 130};
 				if (_fidx != -1) then {
 					private _icounter = 0;
 					while {_icounter < 50 || {_fidx != -1}} do {
 						_idx = floor random (count _parray);
-						_poss = _parray select _idx;
+						_poss = _parray # _idx;
 						_fidx = d_currentcamps findIf {_x distance2D _poss < 130};
 						_icounter = _icounter + 1;
 					};
@@ -166,9 +166,9 @@ if (d_ao_check_for_ai in [0, 1]) then {
 		private _flagPole = createVehicle [d_flag_pole, _fwfpos, [], 0, "NONE"];
 		_flagPole setPos _fwfpos;
 		_wf setVariable ["d_FLAG", _flagPole, true];
-		private _maname = format ["d_camp_%1", _wf];
-		__TRACE_2("","_i","_maname")
 		if (d_ao_markers == 1) then {
+			private _maname = format ["d_camp_%1", _wf call d_fnc_markername];
+			__TRACE_2("","_i","_maname")
 			deleteMarker _maname;
 			[_maname, _poss, "ICON", "ColorBlack", [0.5, 0.5], str _i, 0, d_strongpointmarker] call d_fnc_CreateMarkerGlobal;
 			_wf setVariable ["d_camp_mar", _maname];
@@ -233,6 +233,11 @@ sleep 1;
 
 if (!isNil "d_sm_speedboat" && {d_sm_speedboat != ""}) then {
 	[_trg_center, _mtradius] spawn d_fnc_seapatrol;
+};
+
+sleep 0.1;
+if (d_IllumMainTarget == 0) then {
+	[_trg_center, _mtradius] execFSM "fsms\fn_Illum.fsm";
 };
 
 sleep 5.213;

@@ -5,55 +5,59 @@
 
 params ["_sname", "_sender"];
 
+diag_log ["DOM db loadsavegame _this:", _this];
+
 __TRACE_1("","_sname")
 
 private _dbresult = [];
 
 if (!d_tt_ver) then {
-#ifndef __INTERCEPTDB__
-	_dbresult = if (_sender != objNull) then {
-		parseSimpleArray ("extdb3" callExtension format ["0:dom:missionGet:%1", toLower (worldName + _sname)]);
-	} else {
-		__TRACE("Before")
-		_res = parseSimpleArray ("extdb3" callExtension format ["0:dom:missionGet2:%1", tolower (worldName + _sname + briefingname)]);
-		__TRACE_1("","_res")
-		_res
-	};
-	if (_dbresult # 0 == 1) then {
-		_dbresult = _dbresult # 1;
-	} else {
-		_dbresult = [];
-	};
-#else
-	if (d_interceptdb) then {
-		if (_sender != objNull) then {
-			_dbresult = ["missionGet", [toLower (worldName + _sname)]] call dsi_fnc_queryconfig;
-		} else {
-			_dbresult = ["missionGet2", [toLower (worldName + _sname + briefingname)]] call dsi_fnc_queryconfig;
+	call {
+		if (d_db_type == 0) exitWith {
+			_dbresult = if (_sender != objNull) then {
+				parseSimpleArray ("extdb3" callExtension format ["0:dom:missionGet:%1", toLower (worldName + _sname)]);
+			} else {
+				__TRACE("Before")
+				_res = parseSimpleArray ("extdb3" callExtension format ["0:dom:missionGet2:%1", tolower (worldName + _sname + briefingname)]);
+				__TRACE_1("","_res")
+				_res
+			};
+			if (_dbresult # 0 == 1) then {
+				_dbresult = _dbresult # 1;
+			} else {
+				_dbresult = [];
+			};
+		};
+		if (d_db_type == 1) exitWith {
+			if (_sender != objNull) then {
+				_dbresult = ["missionGet", [toLower (worldName + _sname)]] call d_fnc_queryconfig;
+			} else {
+				_dbresult = ["missionGet2", [toLower (worldName + _sname + briefingname)]] call d_fnc_queryconfig;
+			};
 		};
 	};
-#endif
 } else {
-#ifndef __INTERCEPTDB__
-	_dbresult = if (_sender != objNull) then {
-		parseSimpleArray ("extdb3" callExtension format ["0:dom:missionttGet:%1", tolower (worldName + _sname)]);
-	} else {
-		parseSimpleArray ("extdb3" callExtension format ["0:dom:missionttGet2:%1", tolower (worldName + _sname + briefingname)]);
-	};
-	if (_dbresult # 0 == 1) then {
-		_dbresult = _dbresult # 1;
-	} else {
-		_dbresult = [];
-	};
-#else
-	if (d_interceptdb) then {
-		if (_sender != objNull) then {
-			_dbresult = ["missionttGet", [toLower (worldName + _sname)]] call dsi_fnc_queryconfig;
-		} else {
-			_dbresult = ["missionttGet2", [toLower (worldName + _sname + briefingname)]] call dsi_fnc_queryconfig;
+	call {
+		if (d_db_type == 0) exitWith {
+			_dbresult = if (_sender != objNull) then {
+				parseSimpleArray ("extdb3" callExtension format ["0:dom:missionttGet:%1", tolower (worldName + _sname)]);
+			} else {
+				parseSimpleArray ("extdb3" callExtension format ["0:dom:missionttGet2:%1", tolower (worldName + _sname + briefingname)]);
+			};
+			if (_dbresult # 0 == 1) then {
+				_dbresult = _dbresult # 1;
+			} else {
+				_dbresult = [];
+			};
+		};
+		if (d_db_type == 1) exitWith {
+			if (_sender != objNull) then {
+				_dbresult = ["missionttGet", [toLower (worldName + _sname)]] call d_fnc_queryconfig;
+			} else {
+				_dbresult = ["missionttGet2", [toLower (worldName + _sname + briefingname)]] call d_fnc_queryconfig;
+			};
 		};
 	};
-#endif
 };
 
 __TRACE_1("","_dbresult")
@@ -65,6 +69,7 @@ __TRACE_1("","_dbresult")
 #endif
 
 if (_dbresult isEqualTo []) exitWith {
+	diag_log ["DOM db loadsavegame _dbresult is []:", _this];
 	if (!isNull _sender) then {
 		[7, _sname] remoteExecCall ["d_fnc_csidechat", _sender];
 	} else {
@@ -114,7 +119,7 @@ d_bonus_vecs_db = _ar # 9;
 		_uavgrp deleteGroupWhenEmpty true;
 		_vec allowCrewInImmobile true;
 		[_vec, 7] call d_fnc_setekmode;
-		if (isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")) then {
+		if (d_pylon_lodout == 0 && {isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")}) then {
 			_vec remoteExecCall ["d_fnc_addpylon_action", [0, -2] select isDedicated];
 		};
 	};
@@ -163,12 +168,12 @@ d_bonus_vecs_db = _ar # 9;
 
 	[_vec, 11] call d_fnc_setekmode;
 
-	_vec addEventHandler ["getIn", {_this call d_fnc_sgetinvec}];
+	_vec addEventHandler ["getIn", {call d_fnc_sgetinvec}];
 	
-	_vec addEventHandler ["getOut", {_this call d_fnc_sgetoutvec}];
+	_vec addEventHandler ["getOut", {call d_fnc_sgetoutvec}];
 	
 	if (_vec isKindOf "Air" && {getNumber ((configOf _vec) >> "EjectionSystem" >> "EjectionSeatEnabled") == 1}) then {
-		_vec addEventHandler ["getOut", {_this call d_fnc_aftereject}];
+		_vec addEventHandler ["getOut", {call d_fnc_aftereject}];
 	};
 	
 	d_bonus_vecs_db set [_forEachIndex, _vec];
@@ -180,7 +185,7 @@ d_retaken_farpspos = if (count _ar >= 12) then {
 	[]
 };
 __TRACE_1("","d_retaken_farpspos")
-if (d_retaken_farpspos isEqualType [] && {!(d_retaken_farpspos isEqualTo [])}) then {
+if (d_retaken_farpspos isEqualType [] && {d_retaken_farpspos isNotEqualTo []}) then {
 	private _allflags = (allMissionObjects "FlagCarrier") select {(str _x) select [0, 9] isEqualTo "d_flag_bb"};
 	{
 		private _poss = _x;
@@ -260,7 +265,7 @@ d_current_mission_counter = _ar # 7;
 d_searchintel = _ar # 8;
 publicVariable "d_searchintel";
 
-_fnc_tt_bonusvec = {
+private _fnc_tt_bonusvec = {
 	params ["_vec_type", "_d_bonus_create_pos", "_d_bonus_air_positions", "_d_bap_counter", "_d_bonus_vec_positions", "_d_bvp_counter", "_side"];
 	private _vec = createVehicle [_vec_type, _d_bonus_create_pos, [], 0, "NONE"];
 	private ["_endpos", "_dir"];
@@ -294,12 +299,12 @@ _fnc_tt_bonusvec = {
 	_vec setVariable ["d_WreckMaxRepair", d_WreckMaxRepair, true];
 	_vec setVariable ["d_isspecialvec", true, true];
 	[_vec, 11] call d_fnc_setekmode;
-	_vec addEventHandler ["getIn", {_this call d_fnc_sgetinvec}];
+	_vec addEventHandler ["getIn", {call d_fnc_sgetinvec}];
 
-	_vec addEventHandler ["getOut", {_this call d_fnc_sgetoutvec}];
+	_vec addEventHandler ["getOut", {call d_fnc_sgetoutvec}];
 
 	if (_vec isKindOf "Air" && {getNumber((configOf _vec) >> "EjectionSystem" >> "EjectionSeatEnabled") == 1}) then {
-		_vec addEventHandler ["getOut", {_this call d_fnc_aftereject}];
+		_vec addEventHandler ["getOut", {call d_fnc_aftereject}];
 	};
 	
 	_vec
@@ -307,11 +312,11 @@ _fnc_tt_bonusvec = {
 
 d_bonus_vecs_db_w = _ar # 9;
 {
-	d_bonus_vecs_db set [_forEachIndex, [_x, d_bonus_create_pos_w, d_bonus_air_positions_w, d_bap_counter_w, d_bonus_vec_positions_w, d_bvp_counter_w, 2] call _fnc_tt_bonusvec];
+	d_bonus_vecs_db_w set [_forEachIndex, [_x, d_bonus_create_pos_w, d_bonus_air_positions_w, d_bap_counter_w, d_bonus_vec_positions_w, d_bvp_counter_w, 2] call _fnc_tt_bonusvec];
 } forEach d_bonus_vecs_db_w;
 d_bonus_vecs_db_e = _ar # 10;
 {
-	d_bonus_vecs_db set [_forEachIndex, [_x, d_bonus_create_pos_e, d_bonus_air_positions_e, d_bap_counter_e, d_bonus_vec_positions_e, d_bvp_counter_e, 2] call _fnc_tt_bonusvec];
+	d_bonus_vecs_db_e set [_forEachIndex, [_x, d_bonus_create_pos_e, d_bonus_air_positions_e, d_bap_counter_e, d_bonus_vec_positions_e, d_bvp_counter_e, 2] call _fnc_tt_bonusvec];
 } forEach d_bonus_vecs_db_e;
 d_points_blufor = _ar # 11;
 d_points_opfor = _ar # 12;

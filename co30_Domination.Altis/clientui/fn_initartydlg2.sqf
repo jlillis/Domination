@@ -35,17 +35,12 @@ private _disp = uiNamespace getVariable "d_ArtilleryDialog2";
 private _ctrllb = _disp displayCtrl 1000;
 lbClear _ctrllb;
 
-if !(d_cur_art_marker_ar isEqualTo []) then {
+if (d_cur_art_marker_ar isNotEqualTo []) then {
 	{
 		private _name = if (isMultiplayer) then {
-			(objectFromNetId  (_x # 1)) call d_fnc_getplayername
+			name (objectFromNetId  (_x # 1))
 		} else {
 			d_name_pl
-		};
-		if (_name != "Error: No unit") then {
-			private _lbAdd = _ctrllb lbAdd _name;
-			_ctrllb lbSetvalue [_lbAdd, _forEachIndex];
-			_ctrllb lbSetData [_lbAdd, _x # 0];
 		};
 	} forEach d_cur_art_marker_ar;
 	_ctrllb lbSetcursel 0;

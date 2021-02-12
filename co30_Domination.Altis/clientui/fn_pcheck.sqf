@@ -12,13 +12,15 @@ if (!d_with_ranked) then {
 		
 		_primweap = _primweap call d_fnc_correctwname;
 		
-		if ((bis_fnc_arsenal_data # 0) find _primweap == -1) then {
+		__TRACE_1("new _primweap","_primweap")
+		
+		if ((bis_fnc_arsenal_data # 0) findIf {_primweap == _x} == -1) then {
 			__TRACE("Prim weap not found")
 			player removeWeapon _origprimw;
 			player addWeapon _prw;
 			
 			private _secits = player getVariable "d_pprimweapitems";
-			if !(primaryWeaponItems player isEqualTo _secits) then {
+			if (primaryWeaponItems player isNotEqualTo _secits) then {
 				removeAllPrimaryWeaponItems player;
 				{player addPrimaryWeaponItem _x} forEach (_secits select {_x != ""});
 			};
@@ -34,13 +36,13 @@ if (!d_with_ranked) then {
 		
 		_secweap = _secweap call d_fnc_correctwname;
 		
-		if ((bis_fnc_arsenal_data # 1) find _secweap == -1) then {
+		if ((bis_fnc_arsenal_data # 1) findIf {_secweap == _x} == -1) then {
 			__TRACE("Sec weap not found")
 			player removeWeapon _origsw;
 			player addWeapon _psw;
 			
 			private _secits = player getVariable "d_psecweapitems";
-			if !(secondaryWeaponItems player isEqualTo _secits) then {
+			if (secondaryWeaponItems player isNotEqualTo _secits) then {
 				{
 					player removeSecondaryWeaponItem _x;
 				} forEach (secondaryWeaponItems player);
@@ -57,13 +59,13 @@ if (!d_with_ranked) then {
 		
 		_hgweap = _hgweap call d_fnc_correctwname;
 		
-		if ((bis_fnc_arsenal_data # 2) find _hgweap == -1) then {
+		if ((bis_fnc_arsenal_data # 2) findIf {_hgweap == _x} == -1) then {
 			__TRACE("Handgun weap not found")
 			player removeWeapon _orighgw;
 			player addWeapon _phw;
 			
 			private _secits = player getVariable "d_phandgweapitems";
-			if !(handgunItems player isEqualTo _secits) then {
+			if (handgunItems player isNotEqualTo _secits) then {
 				removeAllHandgunItems player;
 				{player addHandgunItem _x} forEach (_secits select {_x != ""});
 			};
@@ -74,11 +76,11 @@ if (!d_with_ranked) then {
 };
 
 // uniform
-if !((bis_fnc_arsenal_data # 3) isEqualTo []) then {
+if ((bis_fnc_arsenal_data # 3) isNotEqualTo []) then {
 	private _unip = uniform player;
 	__TRACE_1("","_unip")
 	if (_unip != "") then {
-		if ((bis_fnc_arsenal_data # 3) find _unip == -1) then {
+		if ((bis_fnc_arsenal_data # 3) findIf {_unip == _x} == -1) then {
 			private _ounip = player getVariable "d_uniformp";
 			__TRACE_1("","_ounip")		
 			if (!isNil "_ounip") then {
@@ -91,11 +93,11 @@ if !((bis_fnc_arsenal_data # 3) isEqualTo []) then {
 	};
 };
 // vest
-if !((bis_fnc_arsenal_data # 4) isEqualTo []) then {
+if ((bis_fnc_arsenal_data # 4) isNotEqualTo []) then {
 	private _vest = vest player;
 	__TRACE_1("","_vest")
 	if (_vest != "") then {
-		if ((bis_fnc_arsenal_data # 4) find _vest == -1) then {
+		if ((bis_fnc_arsenal_data # 4) findIf {_vest == _x} == -1) then {
 			private _ovestp = player getVariable "d_vestp";
 			__TRACE_1("","_ovestp")		
 			if (!isNil "_ovestp") then {
@@ -108,11 +110,11 @@ if !((bis_fnc_arsenal_data # 4) isEqualTo []) then {
 	};
 };
 // headgear
-if !((bis_fnc_arsenal_data # 6) isEqualTo []) then {
+if ((bis_fnc_arsenal_data # 6) isNotEqualTo []) then {
 	private _headg = headgear player;
 	__TRACE_1("","_headg")
 	if (_headg != "") then {
-		if ((bis_fnc_arsenal_data # 6) find _headg == -1) then {
+		if ((bis_fnc_arsenal_data # 6) findIf {_headg == _x} == -1) then {
 			private _ohgp = player getVariable "d_headgearp";
 			__TRACE_1("","_ohgp")		
 			if (!isNil "_ohgp") then {
@@ -125,11 +127,11 @@ if !((bis_fnc_arsenal_data # 6) isEqualTo []) then {
 	};
 };
 // backpack
-if !((bis_fnc_arsenal_data # 5) isEqualTo []) then {
+if ((bis_fnc_arsenal_data # 5) isNotEqualTo []) then {
 	private _bpp = backpack player;
 	__TRACE_1("","_bpp")
 	if (_bpp != "") then {
-		if ((bis_fnc_arsenal_data # 5) find _bpp == -1) then {
+		if ((bis_fnc_arsenal_data # 5) findIf {_bpp == _x} == -1) then {
 			private _obpp = player getVariable "d_backpackp";
 			__TRACE_1("","_obpp")		
 			if (!isNil "_obpp") then {
@@ -148,7 +150,7 @@ if (_goggs != "") then {
 	if ((bis_fnc_arsenal_data # 7) isEqualTo []) then {
 		removeGoggles player;
 	};
-	if ((bis_fnc_arsenal_data # 7) find _goggs == -1) then {
+	if ((bis_fnc_arsenal_data # 7) findIf {_goggs == _x} == -1) then {
 		removeGoggles player;
 		private _ogoggs = player getVariable "d_gogglesp";
 		__TRACE_1("","_ogoggs")
@@ -163,7 +165,7 @@ if (_phmd != "") then {
 	if ((bis_fnc_arsenal_data # 8) isEqualTo []) exitWith {
 		player unlinkItem _phmd;
 	};
-	if ((bis_fnc_arsenal_data # 8) find _phmd == -1) then {
+	if ((bis_fnc_arsenal_data # 8) findIf {_phmd == _x} == -1) then {
 		private _ophmd = player getVariable "d_hmdp";
 		if (!isNil "_ophmd" && {_phmd != _ophmd && {_ophmd != ""}}) then {
 			player linkItem _ophmd;
@@ -176,7 +178,7 @@ if (_pbino != "") then {
 	if ((bis_fnc_arsenal_data # 9) isEqualTo []) exitWith {
 		player removeWeapon _pbino;
 	};
-	if ((bis_fnc_arsenal_data # 9) find _pbino == -1) then {
+	if ((bis_fnc_arsenal_data # 9) findIf {_pbino == _x} == -1) then {
 		player removeWeapon _pbino;
 		private _obino = player getVariable "d_binocularp";
 		if (!isNil "_obino" && {_pbino != _obino && {_obino != ""}}) then {
@@ -184,5 +186,3 @@ if (_pbino != "") then {
 		};
 	};
 };
-
-// todo -> Move through optics

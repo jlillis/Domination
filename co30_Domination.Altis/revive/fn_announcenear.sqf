@@ -5,7 +5,7 @@
 
 __TRACE_1("","_this")
 
-if (!alive player || {player getVariable ["xr_pluncon", false]}) exitWith {
+if (!alive player || {player getVariable "xr_pluncon"}) exitWith {
 	hintSilent "";
 	xr_announce_ar = [];
 	xr_announce_unit_ar = [];
@@ -28,7 +28,7 @@ private _where = call {
 
 __TRACE_1("","_reldir")
 
-xr_announce_ar pushBack [time + 15, format [localize "STR_DOM_MISSIONSTRING_1719", _this call d_fnc_getplayername, _where]];
+xr_announce_ar pushBack [time + 15, format [localize "STR_DOM_MISSIONSTRING_1719", name _this, _where]];
 xr_announce_unit_ar pushBack _this;
 
 private _hintar = [];

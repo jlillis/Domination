@@ -2,7 +2,7 @@
 //#define __DEBUG__
 #define THIS_FILE "fn_handledisconnect.sqf"
 #include "..\x_setup.sqf"
-if (!isServer) exitWith{};
+
 params ["_unit", "", "_uid", "_name"];
 
 __TRACE_1("","_this")
@@ -13,16 +13,16 @@ if (isNil "_unit" || {_unit isKindOf "VirtualSpectator_F" || {(_uid isEqualTo ""
 private _abl = _unit getVariable "d_blocks_arty";
 __TRACE_1("","_abl")
 if (!isNil "_abl") then {
-	missionNamespace setVariable ["d_ari_blocked", false, true];
+	missionNamespace setVariable ["d_ari_blocked", nil, true];
 };
 #else
 private _abl = _unit getVariable "d_blocks_arty_w";
 if (!isNil "_abl") then {
-	missionNamespace setVariable ["d_ari_blocked_w", false, true];
+	missionNamespace setVariable ["d_ari_blocked_w", nil, true];
 };
 private _abl = _unit getVariable "d_blocks_arty_e";
 if (!isNil "_abl") then {
-	missionNamespace setVariable ["d_ari_blocked_e", false, true];
+	missionNamespace setVariable ["d_ari_blocked_e", nil, true];
 };
 #endif
 
@@ -32,8 +32,8 @@ if (!isNil "_gru" && {!isNull _gru}) then {
 	_gru spawn d_fnc_hdsellead;
 };
 
-private _pa = d_player_store getVariable _uid;
-if (!isNil "_pa") then {
+private _pa = d_player_hash getOrDefault [_uid, []];
+if (_pa isNotEqualTo []) then {
 	__TRACE_1("player store before change","_pa")
 	_pa set [0, [time - (_pa # 0), -1] select (time - (_pa # 0) < 0)];
 	if ((_pa # 9) # 0 == 0) then {
@@ -44,7 +44,7 @@ if (!isNil "_pa") then {
 		_pa set [9, [(_pa # 9) # 0, time]];
 	};
 #endif
-	deleteMarker format ["xr_dead_%1", _uid];
+	deleteMarker format ["xr_dead_%1", _pa # 18];
 	private _amark = _pa # 10;
 	__TRACE_1("","_amark")
 	if (_amark != "") then {
@@ -52,7 +52,7 @@ if (!isNil "_pa") then {
 		_pa set [10, ""];
 	};
 	__TRACE("Calling markercheck")
-	[_uid] spawn d_fnc_markercheck;
+	[_uid, _pa # 18] spawn d_fnc_markercheck;
 	
 	private _jar = _unit getVariable "d_jailar";
 	__TRACE_1("","_jar")
@@ -70,21 +70,11 @@ if (!isNil "_pa") then {
 	__TRACE_1("player store after change","_pa")
 };
 
-private _jipid = _unit getVariable "xr_dml_jip_id";
-__TRACE_1("","_jipid")
-if (!isNil "_jipid") then {
-	remoteExecCall ["", _jipid];
-};
-
-_jipid = _unit getVariable "d_artmark_jip_id";
-__TRACE_1("","_jipid")
-if (!isNil "_jipid") then {
-	remoteExecCall ["", _jipid];
-};
+remoteExecCall ["", _unit];
 
 private _ar = _unit getVariable ["d_all_p_vecs_s", []];
 __TRACE_1("","_ar")
-if !(_ar isEqualTo []) then {
+if (_ar isNotEqualTo []) then {
 	{
 		_x setVariable ["d_end_time", time + 600];
 		d_player_created pushBack _vec;

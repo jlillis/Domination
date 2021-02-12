@@ -14,7 +14,7 @@ if (isNil "paramsArray") then {
 		for "_i" from 0 to (count _conf - 1) do {
 			_paramName = configName (_conf select _i);
 			_paramval = getNumber (_conf>>_paramName>>"default");
-			if (_paramval != -99999) then {
+			if (_paramval != -66) then {
 				missionNamespace setVariable [_paramName, _paramval];
 				if (hasInterface) then {
 					diag_log [_paramName, _paramval];
@@ -29,7 +29,7 @@ if (isNil "paramsArray") then {
 	};
 	for "_i" from 0 to (count paramsArray - 1) do {
 		_paramval = paramsArray select _i;
-		if (_paramval != -99999) then {
+		if (_paramval != -66) then {
 			missionNamespace setVariable [configName ((getMissionConfig "Params") select _i), _paramval];
 			if (hasInterface) then {
 				diag_log [configName ((getMissionConfig "Params") select _i), _paramval];
@@ -53,7 +53,7 @@ d_pilots_only = 1;
 d_no_ai = !d_with_ai && {d_with_ai_features == 1};
 d_enemy_mode_current_maintarget = nil; // nil unless d_WithLessArmor is set to random
 
-if (d_with_ace) then {
+if (d_with_ace && {d_ACEMedicalR == 1}) then {
 	d_WithRevive = 1;
 	ace_medical_enableRevive = 1;
 	ace_medical_maxReviveTime = 300;
@@ -69,6 +69,10 @@ if (d_sub_kill_points != 0 && {d_sub_kill_points > 0}) then {
 	d_sub_kill_points = d_sub_kill_points * -1;
 };
 
+if (d_with_ace) then {
+	d_pylon_lodout = 0;
+};
+
 if (isServer) then {
 	skipTime d_TimeOfDay;
 
@@ -81,13 +85,8 @@ if (isServer) then {
 	d_WithLessArmor call d_fnc_setenemymode;
 
 	// enemy ai skill: [base skill, random value (random 0.3) that gets added to the base skill]
-	d_skill_array = switch (d_EnemySkill) do {
-		case 0: {[0.15,0.1]};
-		case 1: {[0.2,0.1]};
-		case 2: {[0.4,0.2]};
-		case 3: {[0.6,0.3]};
-		case 4: {[0.65,0.3]};
-	};
+	d_skill_array = [[0.15,0.1], [0.2,0.1], [0.4,0.2], [0.6,0.3], [0.65,0.3]] select d_EnemySkill;
+	
 	if (isNil "d_addscore_a") then {
 		d_addscore_a = [
 			5, // 1 - barracks building destroyed at main target
@@ -145,6 +144,22 @@ if (isNil "d_ranked_a") then {
 			};
 		};
 	};
+};
+
+if (isServer) then {
+	d_sc_hash = createHashMapFromArray [
+		[0, (d_ranked_a # 3) * -1],
+		[1, (d_ranked_a # 2) * -1],
+		[2, (d_ranked_a # 15) * -1],
+		[3, (d_ranked_a # 5) * -1],
+		[4, (d_ranked_a # 16) * -1],
+		[5, d_ranked_a # 17],
+		[6, (d_ranked_a # 19) * -1],
+		[7, d_ranked_a # 17],
+		[8, (d_ranked_a # 4) * -1],
+		[9, (d_ranked_a # 19) * -1],
+		[10, (d_ranked_a # 20) * -1]
+	];
 };
 
 if (hasInterface) then {

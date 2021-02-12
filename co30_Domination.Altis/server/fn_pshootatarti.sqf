@@ -3,7 +3,7 @@
 #define THIS_FILE "fn_pshootatarti.sqf"
 #include "..\x_setup.sqf"
 
-private _shooter = _this select 6;
+private _shooter = _this # 6;
 if !(_shooter call d_fnc_isplayer) exitWith {};
 
 params ["_vec"];
@@ -20,7 +20,7 @@ if (time >= (_vec getVariable ["d_ncuttoft", 0])) then {
 	if (!isNull _aop && {_shooter == _aop}) exitWith {
 		_vec setVariable ["d_ncuttoft", time + 2];
 	};
-	diag_log format [localize "STR_DOM_MISSIONSTRING_1461", _shooter call d_fnc_getplayername, getPlayerUID _shooter];
-	[15, _shooter call d_fnc_getplayername] remoteExecCall ["d_fnc_csidechat", [0, -2] select isDedicated];
+	diag_log format [localize "STR_DOM_MISSIONSTRING_1461", name _shooter, getPlayerUID _shooter];
+	[15, name _shooter] remoteExecCall ["d_fnc_csidechat", [0, -2] select isDedicated];
 	_vec setVariable ["d_ncuttoft", time + 2];
 };

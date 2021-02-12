@@ -19,7 +19,7 @@ enableRadio false;
 0 fadeSound 0;
 //player setPos (markerPos "xr_resp_marker");
 player setVehiclePosition [markerPos "xr_resp_marker", [], 0, "NONE"]; // CAN_COLLIDE ?
-[player, true] remoteExecCall ["setCaptive"];
+player setCaptive true;
 if (player getVariable "xr_isdead") exitWith {};
 __TRACE("playActionNow Die/setuncon")
 player switchAction "Die";
@@ -41,7 +41,7 @@ _this spawn {
 	__TRACE_1("","_norm_resp")
 	private _d_pos = xr_death_pos;
 	__TRACE_1("","_d_pos")
-	if !(_d_pos isEqualTo []) then {
+	if (_d_pos isNotEqualTo []) then {
 		__TRACE("pos to old pos and dir")
 		player setDir (_d_pos # 1);
 		player setPos (_d_pos # 0);
@@ -82,7 +82,9 @@ _this spawn {
 
 player setVariable ["xr_pisinaction", false];
 player setVariable ["xr_is_dragging", false];
-player setVariable ["xr_dragged", false, true];
+if (!isNil {player getVariable "xr_dragged"}) then {
+	player setVariable ["xr_dragged", nil, true];
+};
 
 0 spawn {
 	scriptName "xr respawn eh spawn3";
@@ -104,12 +106,6 @@ if (d_enablesway == 0) then {
 };
 
 player removeEventHandler ["handleDamage", _tmpeh];
-
-0 spawn {
-	scriptName "xr respawn eh spawn4";
-	sleep 1;
-	xr_name_player = player call d_fnc_getplayername;
-};
 
 showChat true;
 

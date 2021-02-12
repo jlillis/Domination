@@ -11,7 +11,7 @@ private _iccount = 0;\
 while {_poss isEqualTo []} do {\
 	_iccount = _iccount + 1;\
 	_poss = [d_cur_tgt_pos, d_cur_target_radius, 3, 0.3, 0, false, true] call d_fnc_GetRanPointCircleBig;\
-	if (_iccount >= 50 && {!(_poss isEqualTo [])}) exitWith {};\
+	if (_iccount >= 50 && {_poss isNotEqualTo []}) exitWith {};\
 };\
 if (isNil "_poss" || {_poss isEqualTo []}) then {\
 	_poss = [d_cur_tgt_pos, d_cur_target_radius] call d_fnc_getranpointcircle;\
@@ -37,8 +37,9 @@ if (d_mt_respawngroups == 0) then { \
 	_newgroup setVariable ["d_respawninfo", ["specops", [], _trg_center, 0, "patrol2", d_side_enemy, 0, 0, 1, [_trg_center, _mtradius], false, []]]; \
 };
 
-#define __vkilled(ktype) _vec addEventHandler [#killed, {_this pushBack #ktype; _this call d_fnc_MTSMTargetKilled}]; \
-_vec addEventHandler ["handleDamage", {_this call d_fnc_checkmtshothd}];
+#define __vkilled(ktype) _vec addEventHandler [#killed, {_this pushBack #ktype; call d_fnc_MTSMTargetKilled}];
+
+#define __rembuilding _vec spawn {sleep 30; _this setDamage 0; deleteVehicle _this};
 
 if !(isServer) exitWith {};
 
@@ -86,7 +87,7 @@ switch (_sec_kind) do {
 			_vec setPos _poss;
 		} else {
 			_vec setPos (_forar # 0);
-			d_mtmissionobj = _forar # 1;
+			d_mtmissionobjs pushBack (_forar # 1);
 		};
 		_vec setRank "COLONEL";
 		_vec setSkill 0.3;
@@ -100,7 +101,7 @@ switch (_sec_kind) do {
 			remoteExecCall ["d_fnc_s_b_client", [0, -2] select isDedicated];
 		} else {
 			if (!isNull d_searchbody) then {
-				d_searchbody = objNull; publicVariable "d_searchbody";
+				d_searchbody = nil; publicVariable "d_searchbody";
 			};
 		};
 		sleep 0.1;
@@ -127,11 +128,15 @@ switch (_sec_kind) do {
 		//_vec setPos _poss;
 		//_vec setVectorUp [0,0,1];
 		__vkilled(radar_down);
+		if (d_MTTowerSatchelsOnly == 0) then {
+			_vec addEventHandler ["handleDamage", {call d_fnc_checkmtshothd}];
+		};
 		d_fixor_var = _vec;
-		d_mtmissionobj = _vec;
+		d_mtmissionobjs pushBack _vec;
 		if (d_with_dynsim == 0) then {
 			[_vec, 5] spawn d_fnc_enabledynsim;
 		};
+		__rembuilding
 		sleep 1.0112;
 		__specops;
 	};
@@ -143,19 +148,20 @@ switch (_sec_kind) do {
 		_vec setDir (floor random 360);
 		//_vec setPos _poss;
 		_vec lock true;
-		_vec addEventHandler ["killed", {
-			_this pushBack "ammo_down";
-			_this call d_fnc_MTSMTargetKilled;
-			_this call d_fnc_handleDeadVec;
-		}];
+		__vkilled(ammo_down);
+		if (d_MTTowerSatchelsOnly == 0) then {
+			_vec addEventHandler ["handleDamage", {call d_fnc_checkmtshothd}];
+		};
 		d_fixor_var = _vec;
-		d_mtmissionobj = _vec;
-		d_mtmissionobj2 = createVehicle ["CamoNet_wdl_big_F", getPos _vec, [], 0, "NONE"];
-		d_mtmissionobj2 setDir (getDir _vec);
-		d_mtmissionobj2 setPos (getPos _vec);
+		d_mtmissionobjs pushBack _vec;
+		private _vec2 = createVehicle ["CamoNet_wdl_big_F", getPos _vec, [], 0, "NONE"];
+		_vec2 setDir (getDir _vec);
+		_vec2 setPos (getPos _vec);
+		d_mtmissionobjs pushBack _vec2;
 		if (d_with_dynsim == 0) then {
 			[_vec, 5] spawn d_fnc_enabledynsim;
 		};
+		addToRemainsCollector [_vec];
 		sleep 1.0112;
 		__specops;
 	};
@@ -171,19 +177,20 @@ switch (_sec_kind) do {
 		_vec setDir (floor random 360);
 		//_vec setPos _poss;
 		_vec lock true;
-		_vec addEventHandler ["killed", {
-			_this pushBack "med_down";
-			_this call d_fnc_MTSMTargetKilled;
-			_this call d_fnc_handleDeadVec;
-		}];
+		__vkilled(med_down);
+		if (d_MTTowerSatchelsOnly == 0) then {
+			_vec addEventHandler ["handleDamage", {call d_fnc_checkmtshothd}];
+		};
 		d_fixor_var = _vec;
-		d_mtmissionobj = _vec;
-		d_mtmissionobj2 = createVehicle ["CamoNet_wdl_big_F", getPos _vec, [], 0, "NONE"];
-		d_mtmissionobj2 setDir (getDir _vec);
-		d_mtmissionobj2 setPos (getPos _vec);
+		d_mtmissionobjs pushBack _vec;
+		private _vec2 = createVehicle ["CamoNet_wdl_big_F", getPos _vec, [], 0, "NONE"];
+		_vec2 setDir (getDir _vec);
+		_vec2 setPos (getPos _vec);
+		d_mtmissionobjs pushBack _vec2;
 		if (d_with_dynsim == 0) then {
 			[_vec, 5] spawn d_fnc_enabledynsim;
 		};
+		addToRemainsCollector [_vec];
 		sleep 1.0112;
 		__specops;
 	};
@@ -195,11 +202,15 @@ switch (_sec_kind) do {
 		//_vec setPos _poss;
 		_vec lock true;
 		__vkilled(hq_down);
+		if (d_MTTowerSatchelsOnly == 0) then {
+			_vec addEventHandler ["handleDamage", {call d_fnc_checkmtshothd}];
+		};
 		d_fixor_var = _vec;
-		d_mtmissionobj = _vec;
+		d_mtmissionobjs pushBack _vec;
 		if (d_with_dynsim == 0) then {
 			[_vec, 5] spawn d_fnc_enabledynsim;
 		};
+		__rembuilding
 		sleep 1.0112;
 		__specops;
 	};
@@ -211,14 +222,19 @@ switch (_sec_kind) do {
 		//_vec setPos _poss;
 		//_vec setVectorUp [0,0,1];
 		__vkilled(light_down);
+		if (d_MTTowerSatchelsOnly == 0) then {
+			_vec addEventHandler ["handleDamage", {call d_fnc_checkmtshothd}];
+		};
 		d_fixor_var = _vec;
-		d_mtmissionobj = _vec;
-		d_mtmissionobj2 = createVehicle ["CamoNet_wdl_big_F", getPos _vec, [], 0, "NONE"];
-		d_mtmissionobj2 setDir (getDir _vec);
-		d_mtmissionobj2 setPos (getPos _vec);
+		d_mtmissionobjs pushBack _vec;
+		private _vec2 = createVehicle ["CamoNet_wdl_big_F", getPos _vec, [], 0, "NONE"];
+		_vec2 setDir (getDir _vec);
+		_vec2 setPos (getPos _vec);
+		d_mtmissionobjs pushBack _vec2;
 		if (d_with_dynsim == 0) then {
 			[_vec, 5] spawn d_fnc_enabledynsim;
 		};
+		__rembuilding
 		sleep 1.0112;
 		__specops;
 	};
@@ -236,11 +252,15 @@ switch (_sec_kind) do {
 		//_vec setPos _poss;
 		//_vec setVectorUp [0,0,1];
 		__vkilled(heavy_down);
+		if (d_MTTowerSatchelsOnly == 0) then {
+			_vec addEventHandler ["handleDamage", {call d_fnc_checkmtshothd}];
+		};
 		d_fixor_var = _vec;
-		d_mtmissionobj = _vec;
+		d_mtmissionobjs pushBack _vec;
 		if (d_with_dynsim == 0) then {
 			[_vec, 5] spawn d_fnc_enabledynsim;
 		};
+		__rembuilding
 		sleep 1.0112;
 		__specops;
 	};
@@ -252,11 +272,15 @@ switch (_sec_kind) do {
 		//_vec setPos _poss;
 		//_vec setVectorUp [0,0,1];
 		__vkilled(airrad_down);
+		if (d_MTTowerSatchelsOnly == 0) then {
+			_vec addEventHandler ["handleDamage", {call d_fnc_checkmtshothd}];
+		};
 		d_fixor_var = _vec;
-		d_mtmissionobj = _vec;
+		d_mtmissionobjs pushBack _vec;
 		if (d_with_dynsim == 0) then {
 			[_vec, 5] spawn d_fnc_enabledynsim;
 		};
+		__rembuilding
 		sleep 1.0112;
 		__specops;
 	};
@@ -279,7 +303,7 @@ switch (_sec_kind) do {
 			_vec setPos _poss;
 		} else {
 			_vec setPos (_forar # 0);
-			d_mtmissionobj = _forar # 1;
+			d_mtmissionobjs pushBack (_forar # 1);
 		};
 		_vec setRank "COLONEL";
 		_vec setSkill 0.3;
@@ -332,7 +356,7 @@ switch (_sec_kind) do {
 			_vec setPos _poss;
 		} else {
 			_vec setPos (_forar # 0);
-			d_mtmissionobj = _forar # 1;
+			d_mtmissionobjs pushBack (_forar # 1);
 		};
 		_vec setRank "COLONEL";
 		_vec setSkill 0.3;
@@ -375,7 +399,7 @@ switch (_sec_kind) do {
 d_sec_kind = _sec_kind; publicVariable "d_sec_kind";
 private _s = "";
 if (d_current_target_index != -1) then {
-	_s = (switch (_sec_kind) do {
+	_s = switch (_sec_kind) do {
 		case 1: {
 			format [localize "STR_DOM_MISSIONSTRING_891", d_cur_tgt_name]
 		};
@@ -406,7 +430,7 @@ if (d_current_target_index != -1) then {
 		case 10: {
 			format [localize "STR_DOM_MISSIONSTRING_904", d_cur_tgt_name]
 		};
-	});
+	};
 } else {
 	_s = localize "STR_DOM_MISSIONSTRING_905";
 };

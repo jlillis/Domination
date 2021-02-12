@@ -13,9 +13,9 @@ xr_phd_invulnerable = true;
 
 createDialog "d_AdminDialog";
 
-waitUntil {!isNil "d_admin_dialog_open" || {!d_admin_dialog_open || {!alive player || {player getVariable ["xr_pluncon", false] || {player getVariable ["ace_isunconscious", false]}}}}};
+waitUntil {!isNil "d_admin_dialog_open" || {!d_admin_dialog_open || {!d_player_canu}}};
 
-if (!alive player || {player getVariable ["xr_pluncon", false] || {player getVariable ["ace_isunconscious", false]}}) exitWith {
+if (!d_player_canu) exitWith {
 	if (d_admin_dialog_open) then {closeDialog 0};
 };
 
@@ -29,7 +29,7 @@ if (!alive player || {player getVariable ["xr_pluncon", false] || {player getVar
 			d_a_d_p_kicked = nil;
 			lbClear _ctrl;
 			{
-				private _index = _ctrl lbAdd (_x call d_fnc_getplayername);
+				private _index = _ctrl lbAdd (name _x);
 				_ctrl lbSetData [_index, str _x];
 			} forEach ((allPlayers - entities "HeadlessClient_F") select {!isNull _x});
 			_ctrl lbSetCurSel 0;

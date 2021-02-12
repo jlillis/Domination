@@ -25,7 +25,7 @@ if (_liftit) then {
 };
 __TRACE_1("","_liftit")
 private _vicon = _vec getVariable ["d_respawn_icon_text_col", []];
-if !(_vicon isEqualTo []) then {
+if (_vicon isNotEqualTo []) then {
 	_vec setVariable ["d_vec", _vicon, true];
 	_vec remoteExecCall ["d_fnc_initvec", [0, -2] select isDedicated];
 };
@@ -65,7 +65,7 @@ if (unitIsUAV _vec) then {
 	_vec allowCrewInImmobile true;
 	_uavgrp deleteGroupWhenEmpty true;
 	[_vec, 7] call d_fnc_setekmode;
-	if (isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")) then {
+	if (d_pylon_lodout == 0 && {isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")}) then {
 		_vec remoteExecCall ["d_fnc_addpylon_action", [0, -2] select isDedicated];
 	};
 } else {
@@ -77,14 +77,14 @@ if (unitIsUAV _vec) then {
 _vec setVariable ["d_OUT_OF_SPACE", -1];
 
 if (_vec isKindOf "Air" && {getNumber ((configOf _vec) >> "EjectionSystem" >> "EjectionSeatEnabled") == 1}) then {
-	_vec addEventHandler ["getOut", {_this call d_fnc_aftereject}];
+	_vec addEventHandler ["getOut", {call d_fnc_aftereject}];
 };
 
 if (d_with_ranked) then {
 	clearWeaponCargoGlobal _vec;
 };
 
-if (_vec isKindOf "Boat_F" || {_vec isKindOf "Boat"}) then {
+if (_vec isKindOf "Boat_F") then {
 	__TRACE_1("isboat","_vec");
 	_vec remoteExecCall ["d_fnc_addpushaction", [0, -2] select isDedicated];
 };
@@ -115,7 +115,7 @@ while {true} do {
 					if (time > _empty_respawn) then {
 						private _runits = (allPlayers - entities "HeadlessClient_F") select {!isNull _x};
 						sleep 0.1;
-						if (!(_runits isEqualTo []) && {_runits findIf {_x distance2D _vec < 100} == -1}) then {
+						if (_runits isNotEqualTo [] && {_runits findIf {_x distance2D _vec < 100} == -1}) then {
 							_disabled = true;
 						};
 					};
@@ -181,7 +181,7 @@ while {true} do {
 			_vec allowCrewInImmobile true;
 			_uavgrp deleteGroupWhenEmpty true;
 			[_vec, 7] call d_fnc_setekmode;
-			if (isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")) then {
+			if (d_pylon_lodout == 0 && {isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")}) then {
 				_vec remoteExecCall ["d_fnc_addpylon_action", [0, -2] select isDedicated];
 			};
 		} else {
@@ -232,7 +232,7 @@ while {true} do {
 		if (_liftit) then {
 			_vec setVariable ["d_liftit", true, true];
 		};
-		if !(_vicon isEqualTo []) then {
+		if (_vicon isNotEqualTo []) then {
 			_vec setVariable ["d_vec", _vicon, true];
 			_vec remoteExecCall ["d_fnc_initvec", [0, -2] select isDedicated];
 		};
@@ -242,7 +242,7 @@ while {true} do {
 		};
 		
 		if (_vec isKindOf "Air" && {getNumber ((configOf _vec) >> "EjectionSystem" >> "EjectionSeatEnabled") == 1}) then {
-			_vec addEventHandler ["getOut", {_this call d_fnc_aftereject}];
+			_vec addEventHandler ["getOut", {call d_fnc_aftereject}];
 		};
 		
 		if (d_with_ranked) then {

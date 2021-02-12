@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "G:\Steam\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, IsAdmin">*/
+/*%FSM<COMPILE "E:\Steam\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, IsAdmin">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Start",0,250,-25.000000,-350.000000,75.000000,-300.000000,0.000000,"Start"};
@@ -49,7 +49,7 @@ link22[] = {19,20};
 link23[] = {20,4};
 link24[] = {21,4};
 globals[] = {0.000000,0,0,0,0,640,480,1,38,6316128,1,-389.664490,412.011230,632.773071,-461.422485,480,865,1};
-window[] = {0,-1,-1,-1,-1,1349,312,2232,312,1,498};
+window[] = {0,-1,-1,-32000,-32000,1245,208,2128,208,1,498};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -100,7 +100,7 @@ class FSM
                                         priority = 20.000000;
                                         to="Reset";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"!alive player || {player getVariable [""xr_pluncon"", false] || {player getVariable [""ace_isunconscious"", false]}}"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!d_player_canu"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -158,7 +158,7 @@ class FSM
                         name = "Check_for_nearEn";
                         itemno = 6;
                         init = /*%FSM<STATEINIT""">*/"private _no = player nearEntities [[""Air"",""Car"",""Motorcycle"",""Tank""], 9];" \n
-                         "_vec = if !(_no isEqualTo []) then {_no select 0} else {objNull};" \n
+                         "_vec = if (_no isNotEqualTo []) then {_no select 0} else {objNull};" \n
                          "disableUserInput false;" \n
                          ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -171,7 +171,7 @@ class FSM
                                         priority = 2.000000;
                                         to="Reset";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"(isMultiplayer && {!d_pisadminp}) || {!alive player || {player getVariable [""xr_pluncon"", false] || {player getVariable [""ace_isunconscious"", false]}}}"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"(isMultiplayer && {!d_pisadminp}) || {!d_player_canu}"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -237,23 +237,23 @@ class FSM
                          "		};" \n
                          "		if (_vec call d_fnc_isVecLocked) then {" \n
                          "			if (_vec isKindOf ""Air"" && {getNumber ((configOf _vec) >> ""EjectionSystem"" >> ""EjectionSeatEnabled"") == 1 && {_vec animationPhase (getText ((configOf _vec) >> ""EjectionSystem"" >> ""CanopyHideAnim"")) > 0.01}}) exitWith {};" \n
-                         "			d_admin_idd = _vec addAction [format [""<t color='#AAD9EF'>%1</t>"", localize ""STR_DOM_MISSIONSTRING_1418""], {_this call d_fnc_lockc}, 1, -1, false, true, """", ""true"", 10];" \n
+                         "			d_admin_idd = _vec addAction [format [""<t color='#AAD9EF'>%1</t>"", localize ""STR_DOM_MISSIONSTRING_1418""], {call d_fnc_lockc}, 1, -1, false, true, """", ""true"", 10];" \n
                          "			d_adm_currentvec_lockstate = true;" \n
                          "		} else {" \n
-                         "			d_admin_idd = _vec addAction [format [""<t color='#AAD9EF'>%1</t>"", localize ""STR_DOM_MISSIONSTRING_1419""], {_this call d_fnc_lockc}, 0, -1, false, true, """", ""true"", 10];" \n
+                         "			d_admin_idd = _vec addAction [format [""<t color='#AAD9EF'>%1</t>"", localize ""STR_DOM_MISSIONSTRING_1419""], {call d_fnc_lockc}, 0, -1, false, true, """", ""true"", 10];" \n
                          "			d_adm_currentvec_lockstate = false;" \n
                          "		};" \n
                          "		d_adm_currentvec = _vec;" \n
                          "	} else {" \n
                          "		if (d_adm_currentvec_lockstate && {!(_vec call d_fnc_isVecLocked)}) then {" \n
                          "			d_adm_currentvec removeAction d_admin_idd;" \n
-                         "			d_admin_idd = _vec addAction [format [""<t color='#AAD9EF'>%1</t>"", localize ""STR_DOM_MISSIONSTRING_1419""], {_this call d_fnc_lockc}, 0, -1, false, true, """", ""true"", 10];" \n
+                         "			d_admin_idd = _vec addAction [format [""<t color='#AAD9EF'>%1</t>"", localize ""STR_DOM_MISSIONSTRING_1419""], {call d_fnc_lockc}, 0, -1, false, true, """", ""true"", 10];" \n
                          "			d_adm_currentvec_lockstate = false;" \n
                          "		} else {" \n
                          "			if (!d_adm_currentvec_lockstate && {(_vec call d_fnc_isVecLocked)}) then {" \n
                          "				d_adm_currentvec removeAction d_admin_idd;" \n
                          "				if (_vec isKindOf ""Air"" && {getNumber ((configOf _vec) >> ""EjectionSystem"" >> ""EjectionSeatEnabled"") == 1 && {_vec animationPhase (getText ((configOf _vec) >> ""EjectionSystem"" >> ""CanopyHideAnim"")) > 0.01}}) exitWith {};" \n
-                         "				d_admin_idd = _vec addAction [format [""<t color='#AAD9EF'>%1</t>"", localize ""STR_DOM_MISSIONSTRING_1418""], {_this call d_fnc_lockc}, 1, -1, false, true, """", ""true"", 10];" \n
+                         "				d_admin_idd = _vec addAction [format [""<t color='#AAD9EF'>%1</t>"", localize ""STR_DOM_MISSIONSTRING_1418""], {call d_fnc_lockc}, 1, -1, false, true, """", ""true"", 10];" \n
                          "				d_adm_currentvec_lockstate = true;" \n
                          "			};" \n
                          "		};" \n

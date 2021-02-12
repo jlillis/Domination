@@ -17,7 +17,7 @@ player setVariable ["xr_is_dragging", false];
 player setVariable ["xr_presptime", -1];
 player setVariable ["xr_pluncon", false, true];
 player setVariable ["xr_pisinaction", false];
-player setVariable ["xr_dragged", false, true];
+player setVariable ["xr_dragged", false];
 player setVariable ["xr_isdead", false];
 
 xr_uncon_units = [];
@@ -26,18 +26,18 @@ xr_death_pos = [];
 private _grpl = group player;
 xr_side_pl = [playerSide, side _grpl] select (!isNull _grpl);
 
-xr_strpldead = format ["xr_dead_%1", getPlayerUID player];
+xr_strpldead = format ["xr_dead_%1", getPlayerID player];
 
-player addEventHandler ["killed", {_this call xr_fnc_killedEH}];
+player addEventHandler ["killed", {call xr_fnc_killedEH}];
 
-player addEventHandler ["respawn", {_this call xr_fnc_respawneh}];
+player addEventHandler ["respawn", {call xr_fnc_respawneh}];
 
-xr_name_player = player call d_fnc_getplayername;
+xr_name_player = name player;
 
 xr_announce_ar = [];
 xr_announce_unit_ar = [];
 
-player setVariable ["xr_hd_eh_i", player addEventHandler ["handleDamage", {_this call xr_fnc_ClientHD}]];
+player setVariable ["xr_hd_eh_i", player addEventHandler ["handleDamage", {call xr_fnc_ClientHD}]];
 
 if (d_only_medics_canrevive != 0) then {
 	xr_pl_can_revive = true;
@@ -51,7 +51,7 @@ if (d_only_medics_canrevive != 0) then {
 			scriptName "spawn xr init";
 			sleep 1;
 			if (alive _this && {_this getVariable ["xr_pluncon", false]}) then {
-				_this call xr_fnc_addActions;
+				call xr_fnc_addActions;
 			};
 		};
 		xr_uncon_units pushBackUnique _x;

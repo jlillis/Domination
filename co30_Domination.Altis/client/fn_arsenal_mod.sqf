@@ -6,14 +6,14 @@
 private _mods = _this apply {toLowerANSI _x};
 __TRACE_1("","_mods")
 
-private _items_no = ["ItemMap", "ItemRadio"];
+private _items_no = ["ItemMap", "ItemRadio", "ToolKit", "MineDetector"];
 
 if (!d_gmcwg) then {
-	_items_no append ["FirstAidKit", "Medikit","ItemCompass", "ItemWatch"];
+	_items_no append ["FirstAidKit", "Medikit", "ItemCompass", "ItemWatch"];
 };
 
 if (!d_ifa3lite && {!d_gmcwg && {!d_unsung && {!d_csla}}}) then {
-	_items_no append ["Rangefinder", "NVGoggles", "NVGoggles_OPFOR", "NVGoggles_INDEP", "ItemGPS", "MineDetector"];
+	_items_no append ["Rangefinder", "NVGoggles", "NVGoggles_OPFOR", "NVGoggles_INDEP", "ItemGPS"];
 };
 
 if (d_with_ace) then {
@@ -23,7 +23,7 @@ if (d_with_ace) then {
 };
 
 if (d_cup) then {
-	_items_no pushBack "ToolKit";
+	_items_no append ["B_UavTerminal", "O_UavTerminal", "I_UavTerminal"];
 };
 
 _items_no = _items_no apply {toLowerANSI _x};
@@ -59,22 +59,20 @@ private _findmodfnc = {
 	{
 		_item = _x;
 		if !(toLowerANSI _item in _items_no) then {
-			_kind = if (isClass (configFile >> "CfgWeapons" >> _x)) then {
-				"CfgWeapons"
-			} else {
-				if (isClass (configFile >> "CfgMagazines" >> _x)) then {
-					"CfgMagazines"
-				} else {
-					if (isClass (configFile >> "CfgVehicles" >> _x)) then {
-						"CfgVehicles"
-					} else {
-						if (isClass (configFile >> "CfgGlasses" >> _x)) then {
-							"CfgGlasses"
-						} else {
-							""
-						};
-					};
+			_kind = call {
+				if (isClass (configFile >> "CfgWeapons" >> _x)) exitWith {
+					"CfgWeapons"
 				};
+				if (isClass (configFile >> "CfgMagazines" >> _x)) exitWith {
+					"CfgMagazines"
+				};
+				if (isClass (configFile >> "CfgVehicles" >> _x)) exitWith {
+					"CfgVehicles"
+				};
+				if (isClass (configFile >> "CfgGlasses" >> _x)) exitWith {
+					"CfgGlasses"
+				};
+				"";
 			};
 			__TRACE_1("","_kind")
 			__TRACE_1("","configSourceAddonList (configFile >> _kind >> _x)")

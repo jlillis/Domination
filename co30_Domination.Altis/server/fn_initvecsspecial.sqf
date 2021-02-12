@@ -24,7 +24,7 @@ if (!isServer) exitWith{};
 		_vec allowCrewInImmobile true;
 		_uavgrp deleteGroupWhenEmpty true;
 		[_vec, 7] call d_fnc_setekmode;
-		if (isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")) then {
+		if (d_pylon_lodout == 0 && {isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")}) then {
 			_vec remoteExecCall ["d_fnc_addpylon_action", [0, -2] select isDedicated];
 		};
 	};
@@ -45,15 +45,16 @@ if (!isServer) exitWith{};
 		_this allowDamage true;
 	};
 	
-	_vec addEventHandler ["getIn", {_this call d_fnc_sgetinvec}];
+	_vec addEventHandler ["getIn", {call d_fnc_sgetinvec}];
 
-	_vec addEventHandler ["getOut", {_this call d_fnc_sgetoutvec}];
+	_vec addEventHandler ["getOut", {call d_fnc_sgetoutvec}];
 	
 	if (_vec isKindOf "Air" && {getNumber ((configOf _vec) >> "EjectionSystem" >> "EjectionSeatEnabled") == 1}) then {
-		_vec addEventHandler ["getOut", {_this call d_fnc_aftereject}];
+		_vec addEventHandler ["getOut", {call d_fnc_aftereject}];
 	};
 	
 	if !(_vec isKindOf "Air") then {
 		_vec setVariable ["d_liftit", true, true];
 	};
+	_vec setDamage 0;
 } forEach _this;

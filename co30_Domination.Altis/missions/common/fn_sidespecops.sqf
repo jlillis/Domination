@@ -29,7 +29,7 @@ for "_i" from 0 to 3 do {
 	sleep 0.2321;
 };
 
-private _grps = ["specops", 3, "allmen", 0, _poss , _radius_p, true] call d_fnc_CreateInf;
+private _grps = ["specops", 3, "allmen", 0, _poss , _radius_p, true, false, -1, false] call d_fnc_CreateInf;
 private _units = [];
 {
 	_units append (units _x);
@@ -41,10 +41,10 @@ d_num_species = 0;
 	_x allowFleeing 0;
 	_x addEventHandler ["killed", {
 		d_num_species = d_num_species + 1;
-		(_this select 0) removeAllEventHandlers "killed";
+		(_this # 0) removeAllEventHandlers "killed";
 	}];
 #ifdef __TT__
-	_x addEventHandler ["handleDamage", {_this call d_fnc_AddSMPoints}];
+	_x addEventHandler ["handleDamage", {call d_fnc_AddSMPoints}];
 #endif
 } forEach _units;
 

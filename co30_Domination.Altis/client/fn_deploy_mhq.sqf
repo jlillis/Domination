@@ -41,7 +41,7 @@ if !(_mhq getVariable ["d_MHQ_Deployed", false]) then {
 		__TRACE("MHQ not empty")
 	};
 
-	if (d_with_mhq_camo == 0 && {!(_mhq isKindOf "Air") && {!(_mhq isKindOf "Ship")}}) then {
+	if (d_with_mhq_camo == 0 && {d_deploy_mhq_camo && {!(_mhq isKindOf "Air") && {!(_mhq isKindOf "Ship")}}}) then {
 		_mhq remoteExecCall ["d_fnc_mhq_net", 2];
 	};
 	_mhq setVariable ["d_MHQ_Deployed", true, true];
@@ -52,7 +52,7 @@ if !(_mhq getVariable ["d_MHQ_Deployed", false]) then {
 	__TRACE("MHQ deployed")
 	private _camo = _mhq getVariable ["d_MHQ_Camo", objNull];
 	if (!isNull _camo) then {deleteVehicle _camo};
-	_mhq setVariable ["d_MHQ_Deployed", false, true];
+	_mhq setVariable ["d_MHQ_Deployed", nil, true];
 	[_mhq, false] remoteExecCall ["d_fnc_mhqdepls", 2];
 	_mhq setVariable ["d_MHQ_Depltime", time + 10, true];
 };

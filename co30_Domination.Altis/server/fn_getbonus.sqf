@@ -5,8 +5,8 @@
 
 if (!isServer) exitWith {};
 
-d_sm_winner = _this select 0;
-d_current_sm_bonus_vec = _this select 1;
+d_sm_winner = _this # 0;
+d_current_sm_bonus_vec = _this # 1;
 
 __TRACE("Starting")
 
@@ -228,7 +228,7 @@ if (d_database_found) then {
 if (unitIsUAV _vec) then {
 	private _uavgrp = createVehicleCrew _vec;
 	_vec allowCrewInImmobile true;
-	if (isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")) then {
+	if (d_pylon_lodout == 0 && {isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")}) then {
 		_vec remoteExecCall ["d_fnc_addpylon_action", [0, -2] select isDedicated];
 	};
 	_uavgrp deleteGroupWhenEmpty true;
@@ -280,7 +280,7 @@ if !(_vec getVariable ["d_oncarrier", false]) then {
 	__TRACE_1("","_endpos")
 	if (_vec_type isKindOf "VTOL_01_base_F" || {_vec_type isKindOf "VTOL_02_base_F"}) then {
 		private _nendpos = _endpos findEmptyPosition [20, 100, _vec_type];
-		if !(_nendpos isEqualTo []) then {_endpos = _nendpos};
+		if (_nendpos isNotEqualTo []) then {_endpos = _nendpos};
 	};
 	_vec setVehiclePosition [_endpos, [], 0, "NONE"];
 } else {
@@ -388,7 +388,7 @@ if (!isNull _vec2) then {
 _vec setDir _dir;
 if (_vec_type isKindOf "VTOL_01_base_F" || {_vec_type isKindOf "VTOL_02_base_F"}) then {
 	private _nendpos = _endpos findEmptyPosition [20, 100, _vec_type];
-	if !(_nendpos isEqualTo []) then {_endpos = _nendpos};
+	if (_nendpos isNotEqualTo []) then {_endpos = _nendpos};
 };
 _vec setVehiclePosition [_endpos, [], 0, "NONE"];
 _vec setVariable ["d_WreckMaxRepair", d_WreckMaxRepair, true];
@@ -404,7 +404,7 @@ if (d_with_ranked) then {
 if (unitIsUAV _vec) then {
 	private _uavgrp = createVehicleCrew _vec;
 	_vec allowCrewInImmobile true;
-	if (isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")) then {
+	if (d_pylon_lodout == 0 && {isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")}) then {
 		_vec remoteExecCall ["d_fnc_addpylon_action", [0, -2] select isDedicated];
 	};
 	_uavgrp deleteGroupWhenEmpty true;
@@ -418,7 +418,7 @@ if (!isNull _vec2) then {
 	_vec2 setDir _dir2;
 	if (_vec_type2 isKindOf "VTOL_01_base_F" || {_vec_type2 isKindOf "VTOL_02_base_F"}) then {
 		private _nendpos2 = _endpos2 findEmptyPosition [20, 100, _vec_type2];
-		if !(_nendpos2 isEqualTo []) then {_endpos2 = _nendpos2};
+		if (_nendpos2 isNotEqualTo []) then {_endpos2 = _nendpos2};
 	};
 	_vec2 setVehiclePosition [_endpos2, [], 0, "NONE"];
 	_vec2 setVariable ["d_WreckMaxRepair", d_WreckMaxRepair, true];
@@ -434,7 +434,7 @@ if (!isNull _vec2) then {
 	if (unitIsUAV _vec2) then {
 		private _uavgrp = createVehicleCrew _vec2;
 		_vec2 allowCrewInImmobile true;
-		if (isClass ((configOf _vec2)>>"Components">>"TransportPylonsComponent")) then {
+		if (d_pylon_lodout == 0 && {isClass ((configOf _vec2)>>"Components">>"TransportPylonsComponent")}) then {
 			_vec2 remoteExecCall ["d_fnc_addpylon_action", [0, -2] select isDedicated];
 		};
 		_uavgrp deleteGroupWhenEmpty true;
@@ -447,21 +447,21 @@ if (!isNull _vec2) then {
 };
 #endif
 
-_vec addEventHandler ["getIn", {_this call d_fnc_sgetinvec}];
+_vec addEventHandler ["getIn", {call d_fnc_sgetinvec}];
 
-_vec addEventHandler ["getOut", {_this call d_fnc_sgetoutvec}];
+_vec addEventHandler ["getOut", {call d_fnc_sgetoutvec}];
 
 if (_vec isKindOf "Air" && {getNumber ((configOf _vec) >> "EjectionSystem" >> "EjectionSeatEnabled") == 1}) then {
-	_vec addEventHandler ["getOut", {_this call d_fnc_aftereject}];
+	_vec addEventHandler ["getOut", {call d_fnc_aftereject}];
 };
 
 #ifdef __TT__
 if (!isNull _vec2) then {
-	_vec2 addEventHandler ["getIn", {_this call d_fnc_sgetinvec}];
+	_vec2 addEventHandler ["getIn", {call d_fnc_sgetinvec}];
 
-	_vec2 addEventHandler ["getOut", {_this call d_fnc_sgetoutvec}];
+	_vec2 addEventHandler ["getOut", {call d_fnc_sgetoutvec}];
 	if (_vec2 isKindOf "Air" && {getNumber ((configOf _vec2) >> "EjectionSystem" >> "EjectionSeatEnabled") == 1}) then {
-		_vec2 addEventHandler ["getOut", {_this call d_fnc_aftereject}];
+		_vec2 addEventHandler ["getOut", {call d_fnc_aftereject}];
 	};
 };
 #endif

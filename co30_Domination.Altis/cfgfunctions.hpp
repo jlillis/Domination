@@ -6,6 +6,7 @@ class cfgFunctions {
 		tag = "d";
 		class Dom_Client {
 			file = "client";
+			addc(setupplayer);
 			addc(playerspawn);
 			addc(dlgopenx);
 			addc(prespawned);
@@ -127,7 +128,6 @@ class cfgFunctions {
 			addc(waitforuavmap);
 			addc(seatswitchedman);
 			addc(allowedvec);
-			addc(removelinebreak);
 			addc(medicequip);
 			addc(wreck_transport);
 			addc(checkdriver_wreck);
@@ -175,7 +175,6 @@ class cfgFunctions {
 			addc(artywait);
 			addc(bikewait);
 			addc(dlgopenxwait);
-			addc(initplname);
 			addc(scoreadded);
 			addc(scoreaddqeue);
 			addc(csidechat);
@@ -188,6 +187,24 @@ class cfgFunctions {
 			addc(storepitems);
 			addc(camouflage);
 			addc(noaan);
+			addc(suppressed);
+			addc(intro);
+			addc(intro2);
+			addc(setdbstart);
+			addc(emiss);
+			addc(recruitsetup);
+			addc(movecheck);
+			addc(endcam);
+			addc(reservedslot);
+			addc(reservedslot2);
+			addc(flare40);
+			addc(checkammo2);
+			addc(initgrhc);
+			addc(canu);
+			addc(tasks);
+			addc(updatemove);
+			addc(chopcheck);
+			addc(gimmick);
 		};
 		class Dom_UI {
 			file = "clientui";
@@ -252,6 +269,8 @@ class cfgFunctions {
 			addc(userkeyselchanged);
 			addc(lastchanceclient);
 			addc(correctwname);
+			addc(addto3drawar);
+			addc(optioncontrol);
 		};
 		class Dom_Common {
 			file = "common";
@@ -259,7 +278,6 @@ class cfgFunctions {
 			addc(hasnvgoggles);
 			addc(hastoolkit);
 			addc(randomfloor);
-			addc(randomarray);
 			addc(randomindexarray);
 			addc(getconfiggroup);
 			addc(randomfloorarray);
@@ -294,7 +312,6 @@ class cfgFunctions {
 			addc(isnvgoggles);
 			addc(isswimming);
 			addc(posbehindvec);
-			addc(getplayername);
 			addc(checkveckillblufor);
 			addc(checkveckillopfor);
 			addc(create_route);
@@ -313,9 +330,16 @@ class cfgFunctions {
 			addc(getbuildings);
 			addc(getcoveredpositions);
 			addc(getunitbyuid);
+			addc(setleader);
+			addc(sd180);
+			addc(setvel0);
+			addc(seturinf);
+			addc(setbcnil);
 			addc(sortarraybydistance);
 			addc(isvisible);
 			addc(deletearrayunitsvehicles);
+			addc(swm);
+			addc(markername);
 		};
 		class Dom_ext_Scripts {
 			file = "scripts";
@@ -370,7 +394,6 @@ class cfgFunctions {
 			addc(smhiteh);
 			addc(smhandledeh);
 			addc(smhiteh2);
-			addc(hcsmexec);
 			addc(createinf);
 			addc(createarmor);
 			addc(cdoquake);
@@ -379,6 +402,7 @@ class cfgFunctions {
 			addc(createtrigsm);
 			addc(smcough);
 			addc(remactionssm);
+			addc(smsvpos);
 		};
 		class Dom_SMMissions_Common {
 			file = "missions\common";
@@ -592,7 +616,13 @@ class cfgFunctions {
 			addc(checkintersects);
 			addc(initPlayerServer);
 			addc(setenemymode);
+			addc(asfnc);
 			addc(ulreduce);
+			addc(incjail);
+			addc(ascfc);
+			addc(pdistar);
+			addc(addheadshot);
+			addc(v_hd);
 		};
 		class Dom_PrePostInit {
 			file = "init";
@@ -658,6 +688,7 @@ class cfgFunctions {
 			addc(spectdraw3d);
 			addc(bloodpool);
 			addc(hasfak);
+			addc(phogl);
 		};
 	};
 	class Dom_AR {

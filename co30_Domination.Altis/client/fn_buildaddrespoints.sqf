@@ -5,7 +5,7 @@
 
 __TRACE_1("","d_additional_respawn_points_orig")
 
-if !(d_additional_respawn_points_orig isEqualTo []) then {
+if (d_additional_respawn_points_orig isNotEqualTo []) then {
 	private _helparrp = [];
 	{
 		_helparrp pushBack [_x # 2, _forEachIndex];
@@ -21,6 +21,9 @@ if !(d_additional_respawn_points_orig isEqualTo []) then {
 	private "_ele";
 	{
 		_ele = _tempar select (_x # 1);
+		if (count _ele == 4) then {
+			_ele pushBack false;
+		};
 		__TRACE_1("","_ele")
 		d_additional_respawn_points pushBack _ele;
 		d_add_resp_points_uni pushBack (_ele # 0);
@@ -28,7 +31,7 @@ if !(d_additional_respawn_points_orig isEqualTo []) then {
 
 	{
 		if (_x # 1 isEqualType "") then {
-			if !(markerPos (_x # 1) isEqualTo [0,0,0]) then {
+			if (markerPos (_x # 1) isNotEqualTo [0,0,0]) then {
 #ifdef __TT__
 				if (d_player_side != _x # 3) then {
 					(_x # 1) setMarkerAlphaLocal 0;
@@ -40,6 +43,9 @@ if !(d_additional_respawn_points_orig isEqualTo []) then {
 #else
 				_x set [1, markerPos (_x # 1)];
 #endif
+				if (count _x == 5) then {
+					_x pushBack (_x # 1);
+				};
 			} else {
 #ifdef __TT__
 				if (d_player_side != _x # 3) then {
@@ -48,28 +54,31 @@ if !(d_additional_respawn_points_orig isEqualTo []) then {
 				} else {
 					private _dadao = missionNamespace getVariable (_x # 1);
 					_x set [1, getPos _dadao];
-					_dadao addAction [format ["<t color='#FF0000' size='1.5'>%1</t>", localize "STR_DOM_MISSIONSTRING_533"], {_this call d_fnc_teleportx}];
+					_dadao addAction [format ["<t color='#FF0000' size='1.5'>%1</t>", localize "STR_DOM_MISSIONSTRING_533"], {call d_fnc_teleportx}, -1, 1.5, true, true, "", "true", 10];
 					if (d_ParaAtBase == 0) then {
-						_dadao setVariable ["d_jf_id", _dadao addAction [format ["<t color='#D64C30' size='1.2'>%1</t>", localize "STR_DOM_MISSIONSTRING_296"], {_this spawn d_fnc_paraj}, 0]];
+						_dadao setVariable ["d_jf_id", _dadao addAction [format ["<t color='#D64C30' size='1.2'>%1</t>", localize "STR_DOM_MISSIONSTRING_296"], {_this spawn d_fnc_paraj}, 0, 1.5, true, true, "", "true", 10]];
 					};
 					if (count _x > 4 && {_x # 4}) then {
-						_dadao addAction [format ["<t color='#7F7F7F'>%1</t>", localize "STR_DOM_MISSIONSTRING_1816"], {[0, 0, 0, [d_create_bike # 0, 1]] spawn d_fnc_bike}];
+						_dadao addAction [format ["<t color='#7F7F7F'>%1</t>", localize "STR_DOM_MISSIONSTRING_1816"], {[0, 0, 0, [d_create_bike # 0, 1]] spawn d_fnc_bike}, -1, 1.5, true, true, "", "true", 10];
 					};
 				};
 #else
 				private _dadao = missionNamespace getVariable (_x # 1);
 				_x set [1, getPos _dadao];
 				if (isNil {_dadao getVariable "d_teleidx"}) then {
-					_dadao setVariable ["d_teleidx", _dadao addAction [format ["<t color='#FF0000' size='1.5'>%1</t>", localize "STR_DOM_MISSIONSTRING_533"], {_this call d_fnc_teleportx}]];
+					_dadao setVariable ["d_teleidx", _dadao addAction [format ["<t color='#FF0000' size='1.5'>%1</t>", localize "STR_DOM_MISSIONSTRING_533"], {call d_fnc_teleportx}, -1, 1.5, true, true, "", "true", 10]];
 				};
 				if (d_ParaAtBase == 0) then {
 					if (isNil {_dadao getVariable "d_jf_id"}) then {
-						_dadao setVariable ["d_jf_id", _dadao addAction [format ["<t color='#D64C30' size='1.2'>%1</t>", localize "STR_DOM_MISSIONSTRING_296"], {_this spawn d_fnc_paraj}, 0]];
+						_dadao setVariable ["d_jf_id", _dadao addAction [format ["<t color='#D64C30' size='1.2'>%1</t>", localize "STR_DOM_MISSIONSTRING_296"], {_this spawn d_fnc_paraj}, 0, 1.5, true, true, "", "true", 10]];
 					};
 				};
-				if (count _x > 4 && {_x # 4}) then {
+				if (count _x == 5) then {
+					_x pushBack (_x # 1);
+				};
+				if (_x # 4) then {
 					if (isNil {_dadao getVariable "d_bikeidx"}) then {
-						_dadao setVariable ["d_bikeidx", _dadao addAction [format ["<t color='#7F7F7F'>%1</t>", localize "STR_DOM_MISSIONSTRING_1816"], {[0, 0, 0, [d_create_bike # 0, 1]] spawn d_fnc_bike}]];
+						_dadao setVariable ["d_bikeidx", _dadao addAction [format ["<t color='#7F7F7F'>%1</t>", localize "STR_DOM_MISSIONSTRING_1816"], {[0, 0, 0, [d_create_bike # 0, 1]] spawn d_fnc_bike}, -1, 1.5, true, true, "", "true", 10]];
 					};
 				};
 #endif
@@ -90,7 +99,8 @@ if !(d_additional_respawn_points_orig isEqualTo []) then {
 	__TRACE_1("","d_add_resp_points_uni")
 	d_add_resp_points_pos pushBack (getPos D_FLAG_BASE);
 	{
-		if (isNil {(_x # 6) getVariable "d_farptaken"}) then {
+		__TRACE_1("5","_x")
+		if (count _x < 7 || {isNil {(_x # 6) getVariable "d_farptaken"}}) then {
 			d_add_resp_points_pos pushBack (_x # 1);
 		};
 	} forEach d_additional_respawn_points;

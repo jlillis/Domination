@@ -101,7 +101,7 @@ while {true} do {
 					_vec setVariable ["d_vec_is_mhq", [_vec_a # 5, _number_v]];
 				};
 				[_vec, 10] call d_fnc_setekmode;
-				_vec addEventHandler ["handleDamage", {_this call d_fnc_pshootatmhq}];
+				_vec addEventHandler ["handleDamage", {call d_fnc_pshootatmhq}];
 #ifndef __TT__
 				private _flag = call {
 					if (d_own_side == "EAST") exitWith {"\a3\data_f\flags\flag_red_co.paa"};
@@ -136,7 +136,7 @@ while {true} do {
 				_vec allowCrewInImmobile true;
 				_uavgrp deleteGroupWhenEmpty true;
 				[_vec, 7] call d_fnc_setekmode;
-				if (isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")) then {
+				if (d_pylon_lodout == 0 && {isClass ((configOf _vec)>>"Components">>"TransportPylonsComponent")}) then {
 					_vec remoteExecCall ["d_fnc_addpylon_action", [0, -2] select isDedicated];
 				};
 			} else {
@@ -158,7 +158,7 @@ while {true} do {
 			if (isNil "_aslpos") then {
 				_vec allowDamage true;
 			};
-			if (_vec isKindOf "Boat_F" || {_vec isKindOf "Boat"}) then {
+			if (_vec isKindOf "Boat_F") then {
 				_vec remoteExecCall ["d_fnc_addpushaction", [0, -2] select isDedicated];
 			};
 		};

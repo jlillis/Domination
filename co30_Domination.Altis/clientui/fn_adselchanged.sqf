@@ -20,13 +20,13 @@ _selection params ["_control"];
 _control ctrlEnable false;
 private _unit = missionNamespace getVariable (_control lbData _selIdx);
 d_a_d_cur_uid = getPlayerUID _unit;
-d_a_d_cur_unit_name = _unit call d_fnc_getplayername;
+d_a_d_cur_unit_name = name _unit;
 __TRACE_1("adselchanged","_unit")
 d_u_r_inf = nil;
 d_a_d_cur_name = _control lbText _selIdx;
 private _ctrlinfo = __CTRL2(1002);
 _ctrlinfo ctrlSetText format [localize "STR_DOM_MISSIONSTRING_689", d_a_d_cur_name];
-[player, d_a_d_cur_uid] remoteExecCall ["d_fnc_GetAdminArray", 2];
+d_a_d_cur_uid remoteExecCall ["d_fnc_GetAdminArray", 2];
 
 ["d_admin_marker", [0,0,0],"ICON","ColorBlack",[1,1],"",0,"hd_dot"] call d_fnc_CreateMarkerLocal;
 "d_admin_marker" setMarkerTextLocal d_a_d_cur_name;
@@ -41,8 +41,6 @@ ctrlmapanimcommit _ctrl;
 
 private _endtime = time + 30;
 waitUntil {!isNil "d_u_r_inf" || {!d_admin_dialog_open || {!alive player || {time > _endtime}}}};
-
-d_u_r_inf = d_u_r_inf # 1;
 
 if (d_u_r_inf isEqualTo [] || {!d_admin_dialog_open || {!alive player || {time > _endtime}}}) exitWith {};
 

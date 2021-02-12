@@ -2,16 +2,15 @@
 //#define __DEBUG__
 #define THIS_FILE "fn_markercheck.sqf"
 #include "..\x_setup.sqf"
-if (!isServer) exitWith {};
 
-params ["_uid"];
+params ["_uid", "_id"];
 
-__TRACE_1("","_uid")
+__TRACE_1("","_this")
 
 if (_uid isEqualTo "") exitWith {};
 
-private _val = d_placed_objs_store getVariable _uid;
-if (!isNil "_val") then {
+private _val = d_placed_objs_hash getOrDefault [_uid, []];
+if (_val isNotEqualTo []) then {
 	__TRACE_1("1","_val")
 	{
 		__TRACE_1("","_x")
@@ -20,7 +19,7 @@ if (!isNil "_val") then {
 		if (!isNull (_x # 0)) then {
 			private _content = (_x # 0) getVariable ["d_objcont", []];
 			__TRACE_1("","_content")
-			if !(_content isEqualTo []) then {
+			if (_content isNotEqualTo []) then {
 				{deleteVehicle _x} forEach _content;
 			};
 			
@@ -44,11 +43,11 @@ if (!isNil "_val") then {
 			deleteVehicle (_x # 0);
 		};
 	} forEach _val;
-	d_placed_objs_store setVariable [_uid, nil];
+	d_placed_objs_hash deleteAt _uid;
 };
 
-_val = d_placed_objs_store2 getVariable _uid;
-if (!isNil "_val") then {
+_val = d_placed_objs_hash2 getOrDefault [_uid, []];
+if (_val isNotEqualTo []) then {
 	__TRACE_1("2","_val")
 	{
 		if (unitIsUAV _x) then {
@@ -57,23 +56,30 @@ if (!isNil "_val") then {
 		};
 		deleteVehicle _x;
 	} forEach (_val select {!isNull _x});
-	d_placed_objs_store2 setVariable [_uid, nil];
+	d_placed_objs_hash2 deleteAt _uid;
 };
 
-_val = d_placed_objs_store3 getVariable _uid;
-if (!isNil "_val") then {
+_val = d_placed_objs_hash3 getOrDefault [_uid, []];
+if (_val isNotEqualTo []) then {
 	__TRACE_1("3","_val")
 	{
 		deleteVehicle _x;
 	} forEach (_val select {!isNull _x});
-	d_placed_objs_store3 setVariable [_uid, nil];
+	d_placed_objs_hash3 deleteAt _uid;
 };
 
-_val = d_placed_objs_store4 getVariable _uid;
-if (!isNil "_val") then {
+_val = d_placed_objs_hash4 getOrDefault [_uid, []];
+if (_val isNotEqualTo []) then {
 	__TRACE_1("4","_val")
 	{
 		deleteVehicle _x;
 	} forEach (_val select {!isNull _x});
-	d_placed_objs_store4 setVariable [_uid, nil];
+	d_placed_objs_hash4 deleteAt _uid;
 };
+
+private _searchfor = "_USER_DEFINED #" + _id + "/";
+__TRACE_1("","_searchfor")
+{
+	deleteMarker _x;
+	sleep 0.01;
+} forEach (allMapMarkers select {_x find _searchfor > -1});
