@@ -237,6 +237,10 @@ class CfgRemoteExec {
 		class bis_fnc_setovercast {allowedTargets = 2;};
 		class bis_fnc_setdate {allowedTargets = 2;};
 		class d_fnc_initgrhc {allowedTargets = 1;};
+		class BIS_fnc_effectKilledAirDestruction {};
+		class BIS_fnc_effectKilledSecondaries {};
+		class BIS_fnc_objectVar {};
+		class BIS_fnc_setCustomSoundController {};
 #ifdef __TT__
 		class d_fnc_plcheckkillblufor {allowedTargets = 2;};
 		class d_fnc_plcheckkillopfor {allowedTargets = 2;};
@@ -244,6 +248,7 @@ class CfgRemoteExec {
 		class d_fnc_ttpvkill {allowedTargets = 2;};
 		class d_fnc_lastchanceclient {allowedTargets = 1;};
 		class d_fnc_asfnc {allowedTargets = 2;};
+		class d_fnc_delmaloc {allowedTargets = 2; jip = 1;};
 #endif
 	};
 	// List of script commands allowed to be sent from client via remoteExec
@@ -262,9 +267,9 @@ class CfgRemoteExec {
 		class deleteMarker {allowedTargets = 2;};
 		class deleteGroup {};
 		class setSpeaker {allowedTargets = 1;};
-		class setFeatureType {};
+		class setFeatureType {jip = 1;};
+		class deleteMarkerLocal {allowedTargets = 2;};
 #ifdef __TT__
-		class deleteMarkerLocal {allowedTargets = 1;};
 		class setMarkerPosLocal {allowedTargets = 1;};
 #endif
 	};
